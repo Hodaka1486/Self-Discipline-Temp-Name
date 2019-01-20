@@ -12,6 +12,9 @@ namespace CTRL
 {
     public partial class Confirmation : Form
     {
+
+        public Form main_timer_reference { get; set; }//reference to the parent form which will be MainTimer
+
         public Confirmation()
         {
             InitializeComponent();
@@ -37,16 +40,21 @@ namespace CTRL
 
             Properties.Settings.Default.Save();//save all the values, these persist through closing the program
 
-            //unhide maintimer but first i need to figure out how to do it
+            if (Application.OpenForms["MainTimer"] != null)
+            {
+                (Application.OpenForms["MainTimer"] as MainTimer).unhide_main_timer();
+            }
+
             this.Close();            
         }
 
         private void button2_Click(object sender, EventArgs e)//Let me go back
         {
 
-            Gather_Time_Data gather_Time_Data = new Gather_Time_Data();
-
-            gather_Time_Data.Show();
+            if (Application.OpenForms["MainTimer"] != null)
+            {
+                (Application.OpenForms["MainTimer"] as MainTimer).create_gather_time_data();
+            }
 
             this.Close();
 

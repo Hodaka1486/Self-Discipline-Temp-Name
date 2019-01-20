@@ -33,36 +33,33 @@ namespace CTRL
 
             if(!Properties.Settings.Default.initialized)//first time set up
             {
-                var this_form = this;
-
-                this_form.Hide();
 
                 Gather_Time_Data gather_Time_Data = new Gather_Time_Data();
-                gather_Time_Data.Show();     
+                gather_Time_Data.Show();//show the GTD form
+
+                //the main form is hidden in a shown event because load happens before shown
 
             }
-            else//if true then just load the values into the correct spots 
+            else
             {
                 //check if it is a new day or not
-                if(new_Day())
-                {
-                    daily_reset();
+                if( new_Day() ) { daily_Reset(); }
 
-                }
+                //this function initializes all the values on the MainTimer form like
+                //the timer, day goals, original max time, current max time, goal time
+                initialize_timer_values();
 
-                //loading the previously saved values
-                days_until_goal_number.Text = Properties.Settings.Default.goal_days.ToString();
+            }
 
-                //setting the original max, current max and goal max to the proper HH:MM
-                original_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.initial_hours, Properties.Settings.Default.initial_minutes);
-                current_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.current_hours, Properties.Settings.Default.current_minutes);
-                goal_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.goal_hours, Properties.Settings.Default.goal_minutes);
+        }
 
-                //make a check to see if it is a new day
-
-                //this is function that resets the timer, and unblocks the websites and programs 
-                //daily_reset();
-
+        //this event happens when the form is shown, we have to hide it here because form load happens before the form is shown
+        //meaning that it hides it while loading and then reveals it anyway because once it is done loading it is shown
+        private void MainTimer_Shown(object sender, EventArgs e)
+        {
+            if (!Properties.Settings.Default.initialized)//first time set up
+            {
+                Hide();
             }
 
         }
@@ -144,17 +141,19 @@ namespace CTRL
 
         //this function resets the websites and programs that can be used
         //it also calculates how much the current timer for the day should be
-        private void daily_reset()
+        private void daily_Reset()
         {
             //First reduce the value of current max time
             int total_current_minutes = (Properties.Settings.Default.current_hours * 60) + Properties.Settings.Default.current_minutes;
 
             decimal new_current_minutes = total_current_minutes - Properties.Settings.Default.daily_subtraction_minutes;//is a decimal for the floor function, also subtracts the daily time
             if(new_current_minutes < 0) { new_current_minutes = 0; }//if we get into negatives then just set it to 0
-
+ 
             //set the hours and minutes to the correct values
             Properties.Settings.Default.current_hours   = (int)(Math.Floor(new_current_minutes / 60));
             Properties.Settings.Default.current_minutes = (int)(new_current_minutes) % 60;
+
+            Properties.Settings.Default.Save();
 
             //this is where hosts and regedit will be reset to nothing blocked
             //actually, compare what is on those lists and take off what is on our list, so you don't remove the user's if they manually inserted them
@@ -220,6 +219,71 @@ namespace CTRL
             }
         }
 
+        //this function initializes all the values on the MainTimer form like
+        //the timer, day goals, original max time, current max time, goal time
+        private void initialize_timer_values()
+        {
+            //loading the previously saved values
+            days_until_goal_number.Text = Properties.Settings.Default.goal_days.ToString();
+
+            //setting the original max, current max and goal max to the proper HH:MM
+            original_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.initial_hours, Properties.Settings.Default.initial_minutes);
+            current_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.current_hours, Properties.Settings.Default.current_minutes);
+            goal_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.goal_hours, Properties.Settings.Default.goal_minutes);
+
+            hours_left = Properties.Settings.Default.current_hours;
+            minutes_left = Properties.Settings.Default.current_minutes;
+            seconds_left = Properties.Settings.Default.current_seconds;//default is 0, will be not 0 if open the program the same day after a pause
+
+            convert_timer_to_text(hours_left, minutes_left, seconds_left);//have the timer start at the a number rather than 00:00:00
+
+        }
+
+        //this function is called to unhide this form
+        public void unhide_main_timer()
+        {
+            initialize_timer_values();
+
+            this.Show();
+        }
+        
+        //----------------create form functions------------
+        //These functions all create different forms in the intialization process. They are used so that each form can
+        //create the next form in the list, but I need the main form (MainTimer) to be the on to do so
+        //because it needs to be unhidden at the end of the initalization process
+        public void create_gather_time_data()
+        {
+            Gather_Time_Data gather_Time_Data = new Gather_Time_Data();
+                gather_Time_Data.Show();//show the GTD form
+        }
+
+        public void create_website_checkboxes()
+        {
+            Website_Checkbox website_Checkbox = new Website_Checkbox();
+            website_Checkbox.Show();
+        }
+
+        public void create_website_textboxes()
+        {
+            Website_Textbox website_Textbox = new Website_Textbox();
+            website_Textbox.Show();
+        }
+
+        public void create_program_textboxes()
+        {
+            Program_Textbox program_Textbox = new Program_Textbox();
+            program_Textbox.Show();
+        }
+
+        public void create_confirmation()
+        {
+            Confirmation confirmation = new Confirmation();
+            confirmation.Show();
+        }
+        //-------------end create form functions----------
+
+        //This entire section is for testing purposes
+
         private void test_button_1_Click(object sender, EventArgs e)//brings you to Website_Checkbox for testing
         {
             Website_Checkbox website_Checkbox = new Website_Checkbox();
@@ -251,6 +315,12 @@ namespace CTRL
             Properties.Settings.Default.daily_subtraction_minutes = 0;
 
             Properties.Settings.Default.Save();
+        }
+
+        private void MainTimer_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //was going to save the value of the timer so that it can open later but need
+            //to figure out how to save them without disruption the day's current timer
         }
     }
 }

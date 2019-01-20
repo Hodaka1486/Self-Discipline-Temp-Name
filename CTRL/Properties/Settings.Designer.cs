@@ -142,5 +142,17 @@ namespace CTRL.Properties {
                 this["current_date"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int current_seconds {
+            get {
+                return ((int)(this["current_seconds"]));
+            }
+            set {
+                this["current_seconds"] = value;
+            }
+        }
     }
 }

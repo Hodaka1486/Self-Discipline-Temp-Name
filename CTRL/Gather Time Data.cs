@@ -12,6 +12,8 @@ namespace CTRL
 {
     public partial class Gather_Time_Data : Form
     {
+        public Form main_timer_reference { get; set; }//reference to the parent form which will be MainTimer
+
         public Gather_Time_Data()
         {
             InitializeComponent();
@@ -29,8 +31,10 @@ namespace CTRL
 
             Properties.Settings.Default.Save();
 
-            Website_Checkbox website_Checkbox = new Website_Checkbox();
-            website_Checkbox.Show();
+            if (Application.OpenForms["MainTimer"] != null)
+            {
+                (Application.OpenForms["MainTimer"] as MainTimer).create_website_checkboxes();
+            }
 
             this.Close();
         }

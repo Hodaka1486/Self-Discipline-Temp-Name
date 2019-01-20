@@ -12,6 +12,8 @@ namespace CTRL
 {
     public partial class Program_Textbox : Form
     {
+        public Form main_timer_reference { get; set; }//reference to the parent form which will be MainTimer
+
         public Program_Textbox()
         {
             InitializeComponent();
@@ -20,9 +22,10 @@ namespace CTRL
         private void program_textbox_previous_button_Click(object sender, EventArgs e)
         {
 
-            Program_Textbox program_Textbox = new Program_Textbox();
-
-            program_Textbox.Show();
+            if (Application.OpenForms["MainTimer"] != null)
+            {
+                (Application.OpenForms["MainTimer"] as MainTimer).create_website_textboxes();
+            }
 
             this.Close();
 
@@ -31,12 +34,14 @@ namespace CTRL
         private void program_textbox_next_button_Click(object sender, EventArgs e)
         {
 
-            Confirmation confirmation = new Confirmation();
-
-            confirmation.Show();
+            if (Application.OpenForms["MainTimer"] != null)
+            {
+                (Application.OpenForms["MainTimer"] as MainTimer).create_confirmation();
+            }
 
             this.Close();
 
         }
+
     }
 }

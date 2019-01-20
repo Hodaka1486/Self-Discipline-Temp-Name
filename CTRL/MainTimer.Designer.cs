@@ -212,7 +212,9 @@
             this.Controls.Add(this.pause_resume_button);
             this.Name = "MainTimer";
             this.Text = "CTRL";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainTimer_FormClosed);
             this.Load += new System.EventHandler(this.MainTimer_Load);
+            this.Shown += new System.EventHandler(this.MainTimer_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

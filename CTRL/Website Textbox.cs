@@ -12,6 +12,8 @@ namespace CTRL
 {
     public partial class Website_Textbox : Form
     {
+        public Form main_timer_reference { get; set; }//reference to the parent form which will be MainTimer
+
         public Website_Textbox()
         {
             InitializeComponent();
@@ -20,8 +22,10 @@ namespace CTRL
         private void website_textbox_previous_button_Click(object sender, EventArgs e)
         {
 
-            Website_Checkbox website_Checkbox = new Website_Checkbox();
-            website_Checkbox.Show();
+            if (Application.OpenForms["MainTimer"] != null)
+            {
+                (Application.OpenForms["MainTimer"] as MainTimer).create_website_checkboxes();
+            }
 
             //need to load values
 
@@ -31,9 +35,10 @@ namespace CTRL
 
         private void website_textbox_next_button_Click(object sender, EventArgs e)
         {
-
-            Program_Textbox program_Textbox = new Program_Textbox();
-            program_Textbox.Show();
+            if (Application.OpenForms["MainTimer"] != null)
+            {
+                (Application.OpenForms["MainTimer"] as MainTimer).create_program_textboxes();
+            }
 
             //need to save the values
 
