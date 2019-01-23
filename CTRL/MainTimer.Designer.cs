@@ -40,10 +40,9 @@
             this.current_max_time_value = new System.Windows.Forms.Label();
             this.goal_max_time_value = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.test_button_1 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.reset_test_button = new System.Windows.Forms.Button();
+            this.testbutton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pause_resume_button
@@ -151,19 +150,9 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // test_button_1
-            // 
-            this.test_button_1.Location = new System.Drawing.Point(377, 153);
-            this.test_button_1.Name = "test_button_1";
-            this.test_button_1.Size = new System.Drawing.Size(112, 23);
-            this.test_button_1.TabIndex = 12;
-            this.test_button_1.Text = "To Web Check";
-            this.test_button_1.UseVisualStyleBackColor = true;
-            this.test_button_1.Click += new System.EventHandler(this.test_button_1_Click);
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(377, 183);
+            this.button1.Location = new System.Drawing.Point(382, 198);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(112, 23);
             this.button1.TabIndex = 13;
@@ -171,19 +160,9 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(377, 213);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(112, 23);
-            this.button2.TabIndex = 14;
-            this.button2.Text = "To Gather Time Data";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // reset_test_button
             // 
-            this.reset_test_button.Location = new System.Drawing.Point(419, 46);
+            this.reset_test_button.Location = new System.Drawing.Point(419, 166);
             this.reset_test_button.Name = "reset_test_button";
             this.reset_test_button.Size = new System.Drawing.Size(75, 23);
             this.reset_test_button.TabIndex = 15;
@@ -191,15 +170,24 @@
             this.reset_test_button.UseVisualStyleBackColor = true;
             this.reset_test_button.Click += new System.EventHandler(this.reset_test_button_Click);
             // 
+            // testbutton
+            // 
+            this.testbutton.Location = new System.Drawing.Point(419, 137);
+            this.testbutton.Name = "testbutton";
+            this.testbutton.Size = new System.Drawing.Size(75, 23);
+            this.testbutton.TabIndex = 16;
+            this.testbutton.Text = "test";
+            this.testbutton.UseVisualStyleBackColor = true;
+            this.testbutton.Click += new System.EventHandler(this.testbutton_Click);
+            // 
             // MainTimer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(516, 269);
+            this.Controls.Add(this.testbutton);
             this.Controls.Add(this.reset_test_button);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.test_button_1);
             this.Controls.Add(this.goal_max_time_value);
             this.Controls.Add(this.current_max_time_value);
             this.Controls.Add(this.original_max_time_value);
@@ -233,10 +221,9 @@
         private System.Windows.Forms.Label current_max_time_value;
         private System.Windows.Forms.Label goal_max_time_value;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Button test_button_1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button reset_test_button;
+        private System.Windows.Forms.Button testbutton;
     }
 }
 

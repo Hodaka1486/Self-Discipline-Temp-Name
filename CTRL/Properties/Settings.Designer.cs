@@ -154,5 +154,27 @@ namespace CTRL.Properties {
                 this["current_seconds"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection blocked_websites {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["blocked_websites"]));
+            }
+            set {
+                this["blocked_websites"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection blocked_programs {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["blocked_programs"]));
+            }
+            set {
+                this["blocked_programs"] = value;
+            }
+        }
     }
 }

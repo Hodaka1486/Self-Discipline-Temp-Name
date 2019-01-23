@@ -160,6 +160,19 @@ namespace CTRL
 
         }
 
+        //this is the function that implements the blocking of websites and programs
+        private void lockdown()
+        {
+           System.Collections.Specialized.StringCollection locked_sites = new System.Collections.Specialized.StringCollection();
+
+            locked_sites = Properties.Settings.Default.blocked_websites;
+
+            //trying to find a better way to find the hosts file then just assuming that it is always system32\drivers\etc
+            string hosts_path = Environment.GetEnvironmentVariable("systemroot") + "System32\\drivers\\etc\\hosts";
+       
+
+        }
+
         private bool new_Day()
         {
             bool new_day = false;
@@ -283,23 +296,10 @@ namespace CTRL
         //-------------end create form functions----------
 
         //This entire section is for testing purposes
-
-        private void test_button_1_Click(object sender, EventArgs e)//brings you to Website_Checkbox for testing
-        {
-            Website_Checkbox website_Checkbox = new Website_Checkbox();
-            website_Checkbox.Show();
-        }
-
         private void button1_Click(object sender, EventArgs e)//go to settings
         {
             Settings settings = new Settings();
             settings.Show();
-        }
-
-        private void button2_Click(object sender, EventArgs e)//go to gather_time_data
-        {
-            Gather_Time_Data gather_Time_Data = new Gather_Time_Data();
-            gather_Time_Data.Show();
         }
 
         private void reset_test_button_Click(object sender, EventArgs e)//reset button
@@ -313,6 +313,7 @@ namespace CTRL
             Properties.Settings.Default.current_hours = 0;
             Properties.Settings.Default.current_minutes = 0;
             Properties.Settings.Default.daily_subtraction_minutes = 0;
+            Properties.Settings.Default.blocked_websites.Clear();//removes everything from the string collection
 
             Properties.Settings.Default.Save();
         }
@@ -321,6 +322,11 @@ namespace CTRL
         {
             //was going to save the value of the timer so that it can open later but need
             //to figure out how to save them without disruption the day's current timer
+        }
+
+        private void testbutton_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

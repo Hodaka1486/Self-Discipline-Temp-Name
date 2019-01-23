@@ -30,11 +30,16 @@
         {
             this.website_textbox_previous_button = new System.Windows.Forms.Button();
             this.website_textbox_next_button = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.website_textbox_add_button = new System.Windows.Forms.Button();
+            this.website_textbox_remove_button = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // website_textbox_previous_button
             // 
-            this.website_textbox_previous_button.Location = new System.Drawing.Point(31, 59);
+            this.website_textbox_previous_button.Location = new System.Drawing.Point(309, 150);
             this.website_textbox_previous_button.Name = "website_textbox_previous_button";
             this.website_textbox_previous_button.Size = new System.Drawing.Size(75, 23);
             this.website_textbox_previous_button.TabIndex = 0;
@@ -44,7 +49,7 @@
             // 
             // website_textbox_next_button
             // 
-            this.website_textbox_next_button.Location = new System.Drawing.Point(124, 59);
+            this.website_textbox_next_button.Location = new System.Drawing.Point(390, 150);
             this.website_textbox_next_button.Name = "website_textbox_next_button";
             this.website_textbox_next_button.Size = new System.Drawing.Size(75, 23);
             this.website_textbox_next_button.TabIndex = 1;
@@ -52,16 +57,68 @@
             this.website_textbox_next_button.UseVisualStyleBackColor = true;
             this.website_textbox_next_button.Click += new System.EventHandler(this.website_textbox_next_button_Click);
             // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(22, 13);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(218, 160);
+            this.listBox1.TabIndex = 2;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(246, 72);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(218, 20);
+            this.textBox1.TabIndex = 3;
+            // 
+            // website_textbox_add_button
+            // 
+            this.website_textbox_add_button.Location = new System.Drawing.Point(246, 98);
+            this.website_textbox_add_button.Name = "website_textbox_add_button";
+            this.website_textbox_add_button.Size = new System.Drawing.Size(56, 23);
+            this.website_textbox_add_button.TabIndex = 4;
+            this.website_textbox_add_button.Text = "Add";
+            this.website_textbox_add_button.UseVisualStyleBackColor = true;
+            this.website_textbox_add_button.Click += new System.EventHandler(this.website_textbox_add_button_Click);
+            // 
+            // website_textbox_remove_button
+            // 
+            this.website_textbox_remove_button.Location = new System.Drawing.Point(308, 98);
+            this.website_textbox_remove_button.Name = "website_textbox_remove_button";
+            this.website_textbox_remove_button.Size = new System.Drawing.Size(56, 23);
+            this.website_textbox_remove_button.TabIndex = 5;
+            this.website_textbox_remove_button.Text = "Remove";
+            this.website_textbox_remove_button.UseVisualStyleBackColor = true;
+            this.website_textbox_remove_button.Click += new System.EventHandler(this.website_textbox_remove_button_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.label1.Location = new System.Drawing.Point(246, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(211, 51);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Manually add websites to the list\r\nor click one and then remove to\r\nremove it";
+            // 
             // Website_Textbox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(279, 116);
+            this.ClientSize = new System.Drawing.Size(484, 188);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.website_textbox_remove_button);
+            this.Controls.Add(this.website_textbox_add_button);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.website_textbox_next_button);
             this.Controls.Add(this.website_textbox_previous_button);
             this.Name = "Website_Textbox";
             this.Text = "Website_Textbox";
+            this.Load += new System.EventHandler(this.Website_Textbox_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -69,5 +126,10 @@
 
         private System.Windows.Forms.Button website_textbox_previous_button;
         private System.Windows.Forms.Button website_textbox_next_button;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button website_textbox_add_button;
+        private System.Windows.Forms.Button website_textbox_remove_button;
+        private System.Windows.Forms.Label label1;
     }
 }
