@@ -75,6 +75,7 @@
             this.Controls.Add(this.button1);
             this.Name = "Confirmation";
             this.Text = "Confirmation";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Confirmation_FormClosing);
             this.ResumeLayout(false);
 
         }

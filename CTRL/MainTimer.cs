@@ -110,9 +110,8 @@ namespace CTRL
                     {
                         timer1.Stop();
 
-                        timer_label.Text = "Complete";//this is for testing purposes
-
-                        //call a function that implements the website and program blocking
+                        //calls a function that implements the website and program blocking
+                        lockdown();
 
                     }
                     else//XX:00:00
@@ -163,13 +162,38 @@ namespace CTRL
         //this is the function that implements the blocking of websites and programs
         private void lockdown()
         {
-           System.Collections.Specialized.StringCollection locked_sites = new System.Collections.Specialized.StringCollection();
-
+            System.Collections.Specialized.StringCollection locked_sites = new System.Collections.Specialized.StringCollection();
             locked_sites = Properties.Settings.Default.blocked_websites;
 
+            //System.Collections.Specialized.StringCollection locked_programs = new System.Collections.Specialized.StringCollection();
+            //locked_programs = Properties.Settings.Default.blocked_programs;
+
             //trying to find a better way to find the hosts file then just assuming that it is always system32\drivers\etc
-            string hosts_path = Environment.GetEnvironmentVariable("systemroot") + "System32\\drivers\\etc\\hosts";
-       
+            string hosts_path = Environment.GetEnvironmentVariable("systemroot") + "\\System32\\drivers\\etc\\hosts";
+            //another path that will allow me to copy the user's hosts file so that I can use it to unblock the sites when the day resets
+            string hosts_copy_path = Environment.GetEnvironmentVariable("systemroot") + "\\System32\\drivers\\etc\\hosts_original";
+
+            if (!System.IO.File.Exists(hosts_path))//if they don't have a hosts
+            {
+                System.IO.File.Create(hosts_path).Close();//this creates the file and them immediately closes it, leaving it blank
+            }
+
+            System.IO.File.Copy(hosts_path, hosts_copy_path, true);//copying the file
+
+            //now modify the hosts file for blocking websites
+            if(locked_sites!= null)
+            {
+
+                System.IO.File.AppendAllText(hosts_path, Environment.NewLine);//add a newline so that we always start on an uncommented line
+
+                //iterate through the list of websites that should be blocked and add them to the hosts file
+                foreach (string x in locked_sites)
+                {
+                    System.IO.File.AppendAllText(hosts_path, "127.0.0.1     " + "www." + x + Environment.NewLine);
+                    //System.Diagnostics.Debug.WriteLine("appeneded " + x);//this is for testing purposes
+                }
+
+            }          
 
         }
 
@@ -304,18 +328,11 @@ namespace CTRL
 
         private void reset_test_button_Click(object sender, EventArgs e)//reset button
         {
-            Properties.Settings.Default.initialized = false;
-            Properties.Settings.Default.initial_hours = 0;
-            Properties.Settings.Default.initial_minutes = 0;
-            Properties.Settings.Default.goal_hours = 0;
-            Properties.Settings.Default.goal_minutes = 0;
-            Properties.Settings.Default.goal_days = 7;
-            Properties.Settings.Default.current_hours = 0;
-            Properties.Settings.Default.current_minutes = 0;
-            Properties.Settings.Default.daily_subtraction_minutes = 0;
-            Properties.Settings.Default.blocked_websites.Clear();//removes everything from the string collection
+            Properties.Settings.Default.Reset();
 
             Properties.Settings.Default.Save();
+
+            this.Close();
         }
 
         private void MainTimer_FormClosed(object sender, FormClosedEventArgs e)
@@ -326,7 +343,7 @@ namespace CTRL
 
         private void testbutton_Click(object sender, EventArgs e)
         {
-            
+            lockdown();
         }
     }
 }

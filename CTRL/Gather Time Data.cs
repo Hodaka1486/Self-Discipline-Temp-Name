@@ -53,5 +53,20 @@ namespace CTRL
 
         }
 
+        private void Gather_Time_Data_FormClosing(object sender, FormClosingEventArgs e)
+        {
+           /* This doesn't work because using the previous or next buttons count as a UserClosing, need to somehow find whether they hit the X, previous or next
+            //if the user themselves closed this form then also close MainTimer (or else the program stays open but hidden)
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                if (Application.OpenForms["MainTimer"] != null)
+                {
+                    (Application.OpenForms["MainTimer"] as MainTimer).Close();
+                }
+
+            }
+            */
+        }
+
     }
 }

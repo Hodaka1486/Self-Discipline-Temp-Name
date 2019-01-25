@@ -12,15 +12,35 @@ namespace CTRL
 {
     public partial class Program_Textbox : Form
     {
-        public Form main_timer_reference { get; set; }//reference to the parent form which will be MainTimer
+        private System.Collections.Specialized.StringCollection blocked_programs = new System.Collections.Specialized.StringCollection();
 
         public Program_Textbox()
         {
             InitializeComponent();
         }
 
+
+        private void program_textbox_add_button_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Add(textBox1.Text.ToLower());//add the website to the listbox
+
+            textBox1.Text = "";//reset the textbox
+        }
+
+        private void program_textbox_remove_button_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.RemoveAt(listBox1.SelectedIndex);//get rid of the selected item
+        }
+
         private void program_textbox_previous_button_Click(object sender, EventArgs e)
         {
+            blocked_programs.Clear();//clear the string collection so we get only the values in the list box
+
+
+            foreach (string x in listBox1.Items)
+            {
+                blocked_programs.Add(x);
+            }
 
             if (Application.OpenForms["MainTimer"] != null)
             {
@@ -34,6 +54,18 @@ namespace CTRL
         private void program_textbox_next_button_Click(object sender, EventArgs e)
         {
 
+            this.blocked_programs.Clear();
+            
+
+            foreach (string x in listBox1.Items)
+            {
+                blocked_programs.Add(x);
+            }
+
+            Properties.Settings.Default.blocked_programs = this.blocked_programs;
+            Properties.Settings.Default.Save();
+
+
             if (Application.OpenForms["MainTimer"] != null)
             {
                 (Application.OpenForms["MainTimer"] as MainTimer).create_confirmation();
@@ -43,5 +75,38 @@ namespace CTRL
 
         }
 
+        private void Program_Textbox_Load(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.blocked_programs == null)
+            {
+                Properties.Settings.Default.blocked_programs = this.blocked_programs;//setting it from NULL to empty, they are not the same
+            }
+
+            //load the blocked_websites and put them into the list box        
+            this.blocked_programs = Properties.Settings.Default.blocked_programs;
+
+            if (Properties.Settings.Default.blocked_programs != null)
+            {
+                foreach (string x in Properties.Settings.Default.blocked_programs)
+                {
+                    listBox1.Items.Add(x);
+                }
+            }
+        }
+
+        private void Program_Textbox_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            /* This doesn't work because using the previous or next buttons count as a UserClosing, need to somehow find whether they hit the X, previous or next
+            //if the user themselves closed this form then also close MainTimer (or else the program stays open but hidden)
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                if (Application.OpenForms["MainTimer"] != null)
+                {
+                    (Application.OpenForms["MainTimer"] as MainTimer).Close();
+                }
+
+            }
+            */
+        }
     }
 }

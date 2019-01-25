@@ -203,6 +203,7 @@
             this.Controls.Add(this.checkBox1);
             this.Name = "Website_Checkbox";
             this.Text = "Website_Checkbox";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Website_Checkbox_FormClosing);
             this.Load += new System.EventHandler(this.Website_Checkbox_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

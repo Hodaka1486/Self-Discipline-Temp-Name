@@ -60,21 +60,21 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(22, 13);
+            this.listBox1.Location = new System.Drawing.Point(12, 12);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(218, 160);
             this.listBox1.TabIndex = 2;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(246, 72);
+            this.textBox1.Location = new System.Drawing.Point(236, 72);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(218, 20);
             this.textBox1.TabIndex = 3;
             // 
             // website_textbox_add_button
             // 
-            this.website_textbox_add_button.Location = new System.Drawing.Point(246, 98);
+            this.website_textbox_add_button.Location = new System.Drawing.Point(236, 98);
             this.website_textbox_add_button.Name = "website_textbox_add_button";
             this.website_textbox_add_button.Size = new System.Drawing.Size(56, 23);
             this.website_textbox_add_button.TabIndex = 4;
@@ -84,7 +84,7 @@
             // 
             // website_textbox_remove_button
             // 
-            this.website_textbox_remove_button.Location = new System.Drawing.Point(308, 98);
+            this.website_textbox_remove_button.Location = new System.Drawing.Point(298, 98);
             this.website_textbox_remove_button.Name = "website_textbox_remove_button";
             this.website_textbox_remove_button.Size = new System.Drawing.Size(56, 23);
             this.website_textbox_remove_button.TabIndex = 5;
@@ -96,7 +96,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.label1.Location = new System.Drawing.Point(246, 18);
+            this.label1.Location = new System.Drawing.Point(236, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(211, 51);
             this.label1.TabIndex = 6;
@@ -116,6 +116,7 @@
             this.Controls.Add(this.website_textbox_previous_button);
             this.Name = "Website_Textbox";
             this.Text = "Website_Textbox";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Website_Textbox_FormClosing);
             this.Load += new System.EventHandler(this.Website_Textbox_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

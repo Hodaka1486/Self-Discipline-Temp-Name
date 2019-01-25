@@ -212,6 +212,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Gather_Time_Data";
             this.Text = "Gather_Time_Data";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Gather_Time_Data_FormClosing);
             this.Load += new System.EventHandler(this.Gather_Time_Data_Load);
             ((System.ComponentModel.ISupportInitialize)(this.inital_hours_updown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.initial_minutes_updown)).EndInit();

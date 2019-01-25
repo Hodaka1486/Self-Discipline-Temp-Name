@@ -24,11 +24,11 @@ namespace CTRL
         {
             if (checkBox1.Checked)//go from not checked to checked
             {
-                blocked_websites.Add("youtube");
+                blocked_websites.Add("youtube.com");
             }
             else//going from checked to not checked
             {
-                blocked_websites.Remove("youtube");
+                blocked_websites.Remove("youtube.com");
             }            
         }
 
@@ -36,11 +36,11 @@ namespace CTRL
         {
             if (checkBox2.Checked)//go from not checked to checked
             {
-                blocked_websites.Add("facebook");
+                blocked_websites.Add("facebook.com");
             }
             else//going from checked to not checked
             {
-                blocked_websites.Remove("facebook");
+                blocked_websites.Remove("facebook.com");
             }
         }
 
@@ -48,11 +48,11 @@ namespace CTRL
         {
             if (checkBox3.Checked)//go from not checked to checked
             {
-                blocked_websites.Add("reddit");
+                blocked_websites.Add("reddit.com");
             }
             else//going from checked to not checked
             {
-                blocked_websites.Remove("reddit");
+                blocked_websites.Remove("reddit.com");
             }
         }
 
@@ -60,11 +60,11 @@ namespace CTRL
         {
             if (checkBox4.Checked)//go from not checked to checked
             {
-                blocked_websites.Add("amazon");
+                blocked_websites.Add("amazon.com");
             }
             else//going from checked to not checked
             {
-                blocked_websites.Remove("amazon");
+                blocked_websites.Remove("amazon.com");
             }
         }
 
@@ -72,11 +72,11 @@ namespace CTRL
         {
             if (checkBox5.Checked)//go from not checked to checked
             {
-                blocked_websites.Add("twitter");
+                blocked_websites.Add("twitter.com");
             }
             else//going from checked to not checked
             {
-                blocked_websites.Remove("twitter");
+                blocked_websites.Remove("twitter.com");
             }
         }
 
@@ -84,11 +84,11 @@ namespace CTRL
         {
             if (checkBox6.Checked)//go from not checked to checked
             {
-                blocked_websites.Add("instagram");
+                blocked_websites.Add("instagram.com");
             }
             else//going from checked to not checked
             {
-                blocked_websites.Remove("instagram");
+                blocked_websites.Remove("instagram.com");
             }
         }
 
@@ -96,11 +96,11 @@ namespace CTRL
         {
             if (checkBox7.Checked)//go from not checked to checked
             {
-                blocked_websites.Add("netflix");
+                blocked_websites.Add("netflix.com");
             }
             else//going from checked to not checked
             {
-                blocked_websites.Remove("netflix");
+                blocked_websites.Remove("netflix.com");
             }
         }
 
@@ -108,11 +108,11 @@ namespace CTRL
         {
             if (checkBox8.Checked)//go from not checked to checked
             {
-                blocked_websites.Add("ebay");
+                blocked_websites.Add("ebay.com");
             }
             else//going from checked to not checked
             {
-                blocked_websites.Remove("ebay");
+                blocked_websites.Remove("ebay.com");
             }
         }
 
@@ -120,11 +120,11 @@ namespace CTRL
         {
             if (checkBox9.Checked)//go from not checked to checked
             {
-                blocked_websites.Add("whatsapp");
+                blocked_websites.Add("whatsapp.com");
             }
             else//going from checked to not checked
             {
-                blocked_websites.Remove("whatsapp");
+                blocked_websites.Remove("whatsapp.com");
             }
         }
 
@@ -132,11 +132,11 @@ namespace CTRL
         {
             if (checkBox10.Checked)//go from not checked to checked
             {
-                blocked_websites.Add("spotify");
+                blocked_websites.Add("spotify.com");
             }
             else//going from checked to not checked
             {
-                blocked_websites.Remove("spotify");
+                blocked_websites.Remove("spotify.com");
             }
         }
 
@@ -172,22 +172,44 @@ namespace CTRL
 
         private void Website_Checkbox_Load(object sender, EventArgs e)
         {
+            //the default value of the string array is null so we are setting it to be empty rather than null
+            //this means you can call things like contains without throwing a nullreferenceexception
+            if(Properties.Settings.Default.blocked_websites == null)
+            {
+                Properties.Settings.Default.blocked_websites = this.blocked_websites;
+            }
+
             //when loading this page check if any of the webpages on this page are already saved
             //if they are then you need to start the checkboxes in the correct checked state
-            if (Properties.Settings.Default.blocked_websites.Contains("youtube"))   { checkBox1.Checked  = true; }
-            if (Properties.Settings.Default.blocked_websites.Contains("facebook"))  { checkBox2.Checked  = true; }
-            if (Properties.Settings.Default.blocked_websites.Contains("reddit"))    { checkBox3.Checked  = true; }
-            if (Properties.Settings.Default.blocked_websites.Contains("amazon"))    { checkBox4.Checked  = true; }
-            if (Properties.Settings.Default.blocked_websites.Contains("twitter"))   { checkBox5.Checked  = true; }
-            if (Properties.Settings.Default.blocked_websites.Contains("instagram")) { checkBox6.Checked  = true; }
-            if (Properties.Settings.Default.blocked_websites.Contains("netflix"))   { checkBox7.Checked  = true; }
-            if (Properties.Settings.Default.blocked_websites.Contains("ebay"))      { checkBox8.Checked  = true; }
-            if (Properties.Settings.Default.blocked_websites.Contains("whatsapp"))  { checkBox9.Checked  = true; }
-            if (Properties.Settings.Default.blocked_websites.Contains("spotify"))   { checkBox10.Checked = true; }
-
+            if (Properties.Settings.Default.blocked_websites.Contains("youtube.com")) { checkBox1.Checked = true; }
+            if (Properties.Settings.Default.blocked_websites.Contains("facebook.com")) { checkBox2.Checked = true; }
+            if (Properties.Settings.Default.blocked_websites.Contains("reddit.com")) { checkBox3.Checked = true; }
+            if (Properties.Settings.Default.blocked_websites.Contains("amazon.com")) { checkBox4.Checked = true; }
+            if (Properties.Settings.Default.blocked_websites.Contains("twitter.com")) { checkBox5.Checked = true; }
+            if (Properties.Settings.Default.blocked_websites.Contains("instagram.com")) { checkBox6.Checked = true; }
+            if (Properties.Settings.Default.blocked_websites.Contains("netflix.com")) { checkBox7.Checked = true; }
+            if (Properties.Settings.Default.blocked_websites.Contains("ebay.com")) { checkBox8.Checked = true; }
+            if (Properties.Settings.Default.blocked_websites.Contains("whatsapp.com")) { checkBox9.Checked = true; }
+            if (Properties.Settings.Default.blocked_websites.Contains("spotify.com")) { checkBox10.Checked = true; }
+            
             //this loads the value so that websites added with textbox stay then when you go back
             //if you do something like checkbox->textbox->checkbox->textbox
             blocked_websites = Properties.Settings.Default.blocked_websites;
+        }
+
+        private void Website_Checkbox_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            /* This doesn't work because using the previous or next buttons count as a UserClosing, need to somehow find whether they hit the X, previous or next
+            //if the user themselves closed this form then also close MainTimer (or else the program stays open but hidden)
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                if (Application.OpenForms["MainTimer"] != null)
+                {
+                    (Application.OpenForms["MainTimer"] as MainTimer).Close();
+                }
+
+            }
+            */
         }
     }
 }
