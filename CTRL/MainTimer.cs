@@ -7,25 +7,294 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace CTRL
 {
     public partial class MainTimer : Form
     {
-
+        //----------------------------------------------------------Variables--------------------------------------------------------
+        //for the timer, tracks how much time is left
         private int hours_left;
         private int minutes_left;
         private int seconds_left;
 
-        //this list will keep track of all the blocked websites
-        //will be called from the set up forms and the settings form
-        //public List<string> blocked_websites_list = new List<string>();
+        //for the stopwatch, track how productive you are
+        private int hours_productive;
+        private int minutes_productive;
+        private int seconds_productive;
+
+        //-----------------------------------------------------------Functions-------------------------------------------------------
 
         //this is the constructor of the form
         public MainTimer()
         {
             InitializeComponent();
         }
+
+        //used to convert hour/minute into a easy to view format (for displaying current/goal times)
+        private string convert_hr_min_to_text(int hr, int min)
+        {
+            string hr_str = hr.ToString();
+            string min_str = min.ToString();
+
+            if (hr_str.Length == 1) { hr_str = "0" + hr_str; }
+            if (min_str.Length == 1) { min_str = "0" + min_str; }
+
+            return (hr_str + ":" + min_str);
+
+        }
+
+        //used to convert our hour/minute/seconds remaining into a easy to view format (for displaying the timer)
+        private string convert_timer_to_text(int hr, int min, int sec)
+        {
+            string hr_str = hr.ToString();
+            string min_str = min.ToString();
+            string sec_str = sec.ToString();
+
+            if (hr_str.Length == 1) { hr_str = "0" + hr_str; }
+            if (min_str.Length == 1) { min_str = "0" + min_str; }
+            if (sec_str.Length == 1) { sec_str = "0" + sec_str; }
+
+            return hr_str + ":" + min_str + ":" + sec_str;
+
+        }
+
+        //this function initializes all the values on the MainTimer form like
+        //the timer, day goals, original max time, current max time, goal time
+        private void initialize_timer_values()
+        {
+            //loading the previously saved values
+            days_until_goal_number.Text = Properties.Settings.Default.goal_days.ToString();
+
+            //setting the original max, current max and goal max to the proper HH:MM
+            original_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.initial_hours, Properties.Settings.Default.initial_minutes);
+            current_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.current_hours, Properties.Settings.Default.current_minutes);
+            goal_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.goal_hours, Properties.Settings.Default.goal_minutes);
+
+            //load the countdown timer values
+            hours_left = Properties.Settings.Default.current_hours;
+            minutes_left = Properties.Settings.Default.current_minutes;
+            seconds_left = Properties.Settings.Default.current_seconds;//default is 0, will be not 0 if open the program the same day after a pause
+
+            timer_label.Text = convert_timer_to_text(hours_left, minutes_left, seconds_left);//have the timer start at the a number rather than 00:00:00
+
+            //load the stopwatch values
+            this.hours_productive   = Properties.Settings.Default.hours_productive;
+            this.minutes_productive = Properties.Settings.Default.minutes_productive;
+            this.seconds_productive = Properties.Settings.Default.seconds_productive;
+
+            stopwatch_label.Text = convert_timer_to_text(hours_productive, minutes_productive, seconds_productive);
+        }
+
+        //checks if it is a new day since last opening the program
+        private bool new_Day()
+        {
+            bool new_day = false;
+
+            string date = Properties.Settings.Default.current_date;
+            string date_now = DateTime.Today.ToString("dd-MM-yyyy");
+            //string date_now = "18-01-2019"; //for testing, input your own date here
+
+            //the days
+            int day = Convert.ToInt32(date.Substring(0, 2));
+            int day_now = Convert.ToInt32(date_now.Substring(0, 2));
+            //the months
+            int month = Convert.ToInt32(date.Substring(3, 2));
+            int month_now = Convert.ToInt32(date_now.Substring(3, 2));
+            //the years
+            int year = Convert.ToInt32(date.Substring(6, 4));
+            int year_now = Convert.ToInt32(date_now.Substring(6, 4));//the last 4 of the string in this case the year
+
+            //check if the just checked day, month, year are higher than the saved ones
+            bool check_day_higher = day_now > day ? true : false;
+            bool check_month_higher = month_now > month ? true : false;
+            bool check_year_higher = year_now > year ? true : false;
+
+            if (check_year_higher) { new_day = true; }//means we are in a new year
+            else if (year_now == year)//means year is the same            
+            {
+                if (check_month_higher) { new_day = true; }//same year a higher month is a new day
+                else if (month_now == month)//month is the same
+                {
+                    if (check_day_higher) { new_day = true; }//day is higher in same month and year
+                    else { new_day = false; }//the day isn't higher so its the same day or lower
+                }
+                else { new_day = false; }
+            }
+            else { new_day = false; }//went back in years
+
+            return new_day;
+        }
+
+        //this function resets the websites and programs that can be used
+        //it also calculates how much the current timer for the day should be
+        private void daily_Reset()
+        {
+            if (Properties.Settings.Default.goal_days != 0)//if we are at the goal day we won't want to go to -1 days
+            {
+                Properties.Settings.Default.goal_days = Properties.Settings.Default.goal_days - 1;//subtract 1 day from the goal because we are on the next day
+            }
+
+            //First calculate the original time in minutes
+            int total_initial_minutes = (Properties.Settings.Default.initial_hours * 60) + Properties.Settings.Default.initial_minutes;
+
+            int goal_days_difference = Properties.Settings.Default.original_goal_days - Properties.Settings.Default.goal_days;//find the amount of days difference
+
+            //is a decimal for the floor function, also calculates the daily time remaining
+            //it takes the original time and subtracts the time per day multiplied by the amount of days that occured
+            decimal new_goal_minutes = total_initial_minutes - (Properties.Settings.Default.daily_subtraction_minutes * goal_days_difference);
+            if (new_goal_minutes < 0) { new_goal_minutes = 0; }//if we get into negatives then just set it to 0
+
+            //set the hours and minutes to the correct values
+            Properties.Settings.Default.current_hours = (int)(Math.Floor(new_goal_minutes / 60));
+            Properties.Settings.Default.current_minutes = (int)(new_goal_minutes) % 60;
+            Properties.Settings.Default.current_seconds = 0;//if we are on a new day the seconds should be 0
+
+            //set the stopwatch back to 0
+            Properties.Settings.Default.hours_productive   = 0;
+            Properties.Settings.Default.minutes_productive = 0;
+            Properties.Settings.Default.seconds_productive = 0;
+
+            Properties.Settings.Default.Save();
+
+            //this is where hosts and regedit will be reset to nothing blocked
+            string hosts_path = Environment.GetEnvironmentVariable("systemroot") + "\\System32\\drivers\\etc\\hosts";
+            string hosts_copy_path = Environment.GetEnvironmentVariable("systemroot") + "\\System32\\drivers\\etc\\hosts_original";
+
+            if (!System.IO.File.Exists(hosts_copy_path))//if they don't have a backup hosts
+            {
+
+                System.IO.File.Create(hosts_copy_path).Close();//this creates the file and them immediately closes it, leaving it blank
+
+                //System.IO.File.Copy(hosts_copy_path, hosts_path, true);//copying the original back to being hosts so that they are unblocked
+
+                //read the current hosts file into a list, find where our designated #appended by CTRL X
+                //save that index and look through that line to get the number X, then delete that line and the X infront of it
+                //write the hosts file to the backup
+                List<string> linesList = System.IO.File.ReadAllLines(hosts_path).ToList();
+
+                int index = linesList.FindIndex(s => new Regex(@"#appended by CTRL \d+").Match(s).Success);
+
+                //uses regex to find that number in the string, convert the match to a string and then that string to an int
+                if(index != -1)
+                {
+                    int number_of_websites = int.Parse(Regex.Match(linesList[index], @"\d").ToString());
+
+                    //need to remove the strings at index, index-1, index-2, index-3...index-numberofwebsites
+                    //need to fix this entire following section
+
+                    /*
+                    for(int i = 0; i < number_of_websites; i++)
+                    {
+
+                        System.Diagnostics.Debug.WriteLine(linesList[index-1] + " is removed");
+                        linesList.RemoveAt(index - i);
+
+                    }
+
+                    System.IO.File.WriteAllLines(hosts_copy_path, linesList);
+                    */
+                }
+
+            }
+            else//they do still have the backup which is how it should be
+            {
+
+                System.IO.File.Copy(hosts_copy_path, hosts_path, true);//copying the original back to being hosts so that they are unblocked
+
+            }
+
+
+        }
+
+        //this is the function that implements the blocking of websites and programs
+        private void lockdown()
+        {
+            System.Collections.Specialized.StringCollection locked_sites = new System.Collections.Specialized.StringCollection();
+            locked_sites = Properties.Settings.Default.blocked_websites;
+
+            //System.Collections.Specialized.StringCollection locked_programs = new System.Collections.Specialized.StringCollection();
+            //locked_programs = Properties.Settings.Default.blocked_programs;
+
+            //trying to find a better way to find the hosts file then just assuming that it is always system32\drivers\etc
+            string hosts_path = Environment.GetEnvironmentVariable("systemroot") + "\\System32\\drivers\\etc\\hosts";
+            //another path that will allow me to copy the user's hosts file so that I can use it to unblock the sites when the day resets
+            string hosts_copy_path = Environment.GetEnvironmentVariable("systemroot") + "\\System32\\drivers\\etc\\hosts_original";
+
+            if (!System.IO.File.Exists(hosts_path))//if they don't have a hosts
+            {
+                System.IO.File.Create(hosts_path).Close();//this creates the file and them immediately closes it, leaving it blank
+
+                System.Diagnostics.Debug.WriteLine("they don't have a hosts");
+            }
+
+            System.IO.File.Copy(hosts_path, hosts_copy_path, true);//copying the file
+
+            //now modify the hosts file for blocking websites
+            if (locked_sites != null)
+            {
+
+                System.IO.File.AppendAllText(hosts_path, Environment.NewLine);//add a newline so that we always start on an uncommented line
+
+                //iterate through the list of websites that should be blocked and add them to the hosts file
+                foreach (string x in locked_sites)
+                {
+                    System.IO.File.AppendAllText(hosts_path, "127.0.0.1     " + "www." + x + Environment.NewLine);
+                    //System.Diagnostics.Debug.WriteLine("appeneded " + x);//this is for testing purposes
+                }
+
+            }
+            int count = locked_sites.Count;
+
+            System.IO.File.AppendAllText(hosts_path, "#appended by CTRL " + count);
+
+        }
+
+        //this function is called to unhide this form
+        public void unhide_main_timer()
+        {
+            initialize_timer_values();
+
+            this.Show();
+        }
+
+        //--------------------------------------------------Create Form Functions----------------------------------------------------
+        //These functions all create different forms in the intialization process. They are used so that each form can
+        //create the next form in the list, but I need the main form (MainTimer) to be the on to do so
+        //because it needs to be unhidden at the end of the initalization process
+        public void create_gather_time_data()
+        {
+            Gather_Time_Data gather_Time_Data = new Gather_Time_Data();
+            gather_Time_Data.Show();//show the GTD form
+        }
+
+        public void create_website_checkboxes()
+        {
+            Website_Checkbox website_Checkbox = new Website_Checkbox();
+            website_Checkbox.Show();
+        }
+
+        public void create_website_textboxes()
+        {
+            Website_Textbox website_Textbox = new Website_Textbox();
+            website_Textbox.Show();
+        }
+
+        public void create_program_textboxes()
+        {
+            Program_Textbox program_Textbox = new Program_Textbox();
+            program_Textbox.Show();
+        }
+
+        public void create_confirmation()
+        {
+            Confirmation confirmation = new Confirmation();
+            confirmation.Show();
+        }
+
+        //-------------------------------------------------------Form Events----------------------------------------------------------
+        //things like on load or pressing a button
 
         //on opening the form check if initialized is true or false, if false open website checkboxes and hide this
         private void MainTimer_Load(object sender, EventArgs e)
@@ -53,6 +322,20 @@ namespace CTRL
 
         }
 
+        private void MainTimer_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //save teh countdown timer
+            Properties.Settings.Default.current_hours   = this.hours_left;
+            Properties.Settings.Default.current_minutes = this.minutes_left;
+            Properties.Settings.Default.current_seconds = this.seconds_left;
+            //save the stopwatch
+            Properties.Settings.Default.hours_productive   = this.hours_productive;
+            Properties.Settings.Default.minutes_productive = this.minutes_productive;
+            Properties.Settings.Default.seconds_productive = this.seconds_productive;
+
+            Properties.Settings.Default.Save();
+        }
+
         //this event happens when the form is shown, we have to hide it here because form load happens before the form is shown
         //meaning that it hides it while loading and then reveals it anyway because once it is done loading it is shown
         private void MainTimer_Shown(object sender, EventArgs e)
@@ -64,34 +347,6 @@ namespace CTRL
 
         }
 
-        //used to convert hour/minute into a easy to view format
-        private string convert_hr_min_to_text(int hr, int min)
-        {
-            string hr_str = hr.ToString();
-            string min_str = min.ToString();
-
-            if (hr_str.Length == 1) { hr_str = "0" + hr_str; }
-            if (min_str.Length == 1) { min_str = "0" + min_str; }
-
-            return(hr_str + ":" + min_str);
-
-        }
-
-        //used to convert our hour/minute/seconds remaining into a easy to view format
-        private void convert_timer_to_text(int hr, int min, int sec)
-        {
-            string hr_str = hr.ToString();
-            string min_str = min.ToString();
-            string sec_str = sec.ToString();
-
-            if (hr_str.Length  == 1) { hr_str  = "0" + hr_str;  }
-            if (min_str.Length == 1) { min_str = "0" + min_str; }
-            if (sec_str.Length == 1) { sec_str = "0" + sec_str; }
-
-            timer_label.Text = hr_str + ":" + min_str + ":" + sec_str;
-
-        }
-
         //and HH:MM:SS countdown timer, if there is no time remaining then it calls a function to block websites and programs specified
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -99,7 +354,7 @@ namespace CTRL
             {
                 seconds_left = seconds_left - 1;
 
-                convert_timer_to_text(hours_left, minutes_left, seconds_left);
+                timer_label.Text = convert_timer_to_text(hours_left, minutes_left, seconds_left);
 
             }
             else//??:??:00
@@ -122,7 +377,7 @@ namespace CTRL
 
                         seconds_left = 59;
 
-                        convert_timer_to_text(hours_left, minutes_left, seconds_left);
+                        timer_label.Text = convert_timer_to_text(hours_left, minutes_left, seconds_left);
                     }
 
                 }
@@ -132,199 +387,113 @@ namespace CTRL
 
                     seconds_left = 59;
 
-                    convert_timer_to_text(hours_left, minutes_left, seconds_left);
+                    timer_label.Text = convert_timer_to_text(hours_left, minutes_left, seconds_left);
                 }
 
             }
         }
 
-        //this function resets the websites and programs that can be used
-        //it also calculates how much the current timer for the day should be
-        private void daily_Reset()
+
+        private void timer2_Tick(object sender, EventArgs e)
         {
-            //First reduce the value of current max time
-            int total_current_minutes = (Properties.Settings.Default.current_hours * 60) + Properties.Settings.Default.current_minutes;
+            seconds_productive += 1;
 
-            decimal new_current_minutes = total_current_minutes - Properties.Settings.Default.daily_subtraction_minutes;//is a decimal for the floor function, also subtracts the daily time
-            if(new_current_minutes < 0) { new_current_minutes = 0; }//if we get into negatives then just set it to 0
- 
-            //set the hours and minutes to the correct values
-            Properties.Settings.Default.current_hours   = (int)(Math.Floor(new_current_minutes / 60));
-            Properties.Settings.Default.current_minutes = (int)(new_current_minutes) % 60;
-
-            Properties.Settings.Default.Save();
-
-            //this is where hosts and regedit will be reset to nothing blocked
-            //actually, compare what is on those lists and take off what is on our list, so you don't remove the user's if they manually inserted them
-
-        }
-
-        //this is the function that implements the blocking of websites and programs
-        private void lockdown()
-        {
-            System.Collections.Specialized.StringCollection locked_sites = new System.Collections.Specialized.StringCollection();
-            locked_sites = Properties.Settings.Default.blocked_websites;
-
-            //System.Collections.Specialized.StringCollection locked_programs = new System.Collections.Specialized.StringCollection();
-            //locked_programs = Properties.Settings.Default.blocked_programs;
-
-            //trying to find a better way to find the hosts file then just assuming that it is always system32\drivers\etc
-            string hosts_path = Environment.GetEnvironmentVariable("systemroot") + "\\System32\\drivers\\etc\\hosts";
-            //another path that will allow me to copy the user's hosts file so that I can use it to unblock the sites when the day resets
-            string hosts_copy_path = Environment.GetEnvironmentVariable("systemroot") + "\\System32\\drivers\\etc\\hosts_original";
-
-            if (!System.IO.File.Exists(hosts_path))//if they don't have a hosts
+            if(seconds_productive == 60)
             {
-                System.IO.File.Create(hosts_path).Close();//this creates the file and them immediately closes it, leaving it blank
-            }
+                seconds_productive = 0;
 
-            System.IO.File.Copy(hosts_path, hosts_copy_path, true);//copying the file
+                minutes_productive += 1;
 
-            //now modify the hosts file for blocking websites
-            if(locked_sites!= null)
-            {
-
-                System.IO.File.AppendAllText(hosts_path, Environment.NewLine);//add a newline so that we always start on an uncommented line
-
-                //iterate through the list of websites that should be blocked and add them to the hosts file
-                foreach (string x in locked_sites)
+                if(minutes_productive == 60)
                 {
-                    System.IO.File.AppendAllText(hosts_path, "127.0.0.1     " + "www." + x + Environment.NewLine);
-                    //System.Diagnostics.Debug.WriteLine("appeneded " + x);//this is for testing purposes
+                    minutes_productive = 0;
+
+                    hours_productive += 1;
                 }
 
-            }          
-
-        }
-
-        private bool new_Day()
-        {
-            bool new_day = false;
-
-            string date = Properties.Settings.Default.current_date;
-            string date_now = DateTime.Today.ToString("dd-MM-yyyy");
-            //string date_now = "18-01-2019"; //for testing, input your own date here
-
-            //the days
-            int day = Convert.ToInt32(date.Substring(0, 2));
-            int day_now = Convert.ToInt32(date_now.Substring(0, 2));
-            //the months
-            int month = Convert.ToInt32(date.Substring(3, 2));
-            int month_now = Convert.ToInt32(date_now.Substring(3, 2));
-            //the years
-            int year = Convert.ToInt32(date.Substring(6,4));
-            int year_now = Convert.ToInt32(date_now.Substring(6,4));//the last 4 of the string in this case the year
-
-            //check if the just checked day, month, year are higher than the saved ones
-            bool check_day_higher   = day_now > day ? true : false;
-            bool check_month_higher = month_now > month ? true : false;
-            bool check_year_higher  = year_now > year ? true : false;
-
-            if(check_year_higher){new_day = true;}//means we are in a new year
-            else if(year_now == year)//means year is the same            
-            {
-                if (check_month_higher) { new_day = true; }//same year a higher month is a new day
-                else if(month_now == month)//month is the same
-                {
-                    if (check_day_higher) { new_day = true; }//day is higher in same month and year
-                    else { new_day = false; }//the day isn't higher so its the same day or lower
-                }
-                else { new_day = false; }
             }
-            else { new_day = false; }//went back in years
 
-            return new_day;
+           stopwatch_label.Text = convert_timer_to_text(hours_productive, minutes_productive, seconds_productive);
+
         }
 
         private void pause_resume_button_Click(object sender, EventArgs e)
         {
-            if(timer1.Enabled == false)
+            if(timer1.Enabled == false)//if paused then unpause
             {
 
                 timer1.Enabled = true;
 
                 pause_resume_button.Text = "Pause";
 
+                if(timer2.Enabled)//if the stopwatch is counting up pause it
+                {
+                    timer2.Enabled = false;
+
+                    productivity_stopwatch_button.Text = "Resume";
+                }
+
             }
-            else
+            else//if going then pause it
             {
+
                 timer1.Enabled = false;
 
                 pause_resume_button.Text = "Resume";
 
+                if (!timer2.Enabled)//if the stopwatch is paused unpause it
+                {
+                    timer2.Enabled = true;
+
+                    productivity_stopwatch_button.Text = "Pause";
+                }
 
             }
         }
 
-        //this function initializes all the values on the MainTimer form like
-        //the timer, day goals, original max time, current max time, goal time
-        private void initialize_timer_values()
+        private void productivity_stopwatch_button_Click(object sender, EventArgs e)
         {
-            //loading the previously saved values
-            days_until_goal_number.Text = Properties.Settings.Default.goal_days.ToString();
+            if (timer2.Enabled == false)//if not going then unpause
+            {
 
-            //setting the original max, current max and goal max to the proper HH:MM
-            original_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.initial_hours, Properties.Settings.Default.initial_minutes);
-            current_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.current_hours, Properties.Settings.Default.current_minutes);
-            goal_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.goal_hours, Properties.Settings.Default.goal_minutes);
+                timer2.Enabled = true;
 
-            hours_left = Properties.Settings.Default.current_hours;
-            minutes_left = Properties.Settings.Default.current_minutes;
-            seconds_left = Properties.Settings.Default.current_seconds;//default is 0, will be not 0 if open the program the same day after a pause
+                productivity_stopwatch_button.Text = "Pause";
 
-            convert_timer_to_text(hours_left, minutes_left, seconds_left);//have the timer start at the a number rather than 00:00:00
+                if (timer1.Enabled)//if countdown is on then pause it
+                {
+                    timer1.Enabled = false;
+
+                    pause_resume_button.Text = "Resume";
+                }
+
+            }
+            else//if going then pause
+            {
+                timer2.Enabled = false;
+
+                productivity_stopwatch_button.Text = "Resume";
+
+                if (!timer1.Enabled)//if countdown is on then pause it
+                {
+                    timer1.Enabled = true;
+
+                    pause_resume_button.Text = "Pause";
+                }
+
+            }
 
         }
 
-        //this function is called to unhide this form
-        public void unhide_main_timer()
-        {
-            initialize_timer_values();
-
-            this.Show();
-        }
-        
-        //----------------create form functions------------
-        //These functions all create different forms in the intialization process. They are used so that each form can
-        //create the next form in the list, but I need the main form (MainTimer) to be the on to do so
-        //because it needs to be unhidden at the end of the initalization process
-        public void create_gather_time_data()
-        {
-            Gather_Time_Data gather_Time_Data = new Gather_Time_Data();
-                gather_Time_Data.Show();//show the GTD form
-        }
-
-        public void create_website_checkboxes()
-        {
-            Website_Checkbox website_Checkbox = new Website_Checkbox();
-            website_Checkbox.Show();
-        }
-
-        public void create_website_textboxes()
-        {
-            Website_Textbox website_Textbox = new Website_Textbox();
-            website_Textbox.Show();
-        }
-
-        public void create_program_textboxes()
-        {
-            Program_Textbox program_Textbox = new Program_Textbox();
-            program_Textbox.Show();
-        }
-
-        public void create_confirmation()
-        {
-            Confirmation confirmation = new Confirmation();
-            confirmation.Show();
-        }
-        //-------------end create form functions----------
-
-        //This entire section is for testing purposes
-        private void button1_Click(object sender, EventArgs e)//go to settings
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings settings = new Settings();
             settings.Show();
         }
+
+        //------------------------------------------------------Testing---------------------------------------------------
+
+        //This entire section is for testing purposes
 
         private void reset_test_button_Click(object sender, EventArgs e)//reset button
         {
@@ -332,18 +501,26 @@ namespace CTRL
 
             Properties.Settings.Default.Save();
 
-            this.Close();
-        }
+            string hosts_copy_path = Environment.GetEnvironmentVariable("systemroot") + "\\System32\\drivers\\etc\\hosts_original";
 
-        private void MainTimer_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            //was going to save the value of the timer so that it can open later but need
-            //to figure out how to save them without disruption the day's current timer
+            if (System.IO.File.Exists(hosts_copy_path))
+            {
+                System.IO.File.Delete(hosts_copy_path);
+            }
+
+            this.Close();
         }
 
         private void testbutton_Click(object sender, EventArgs e)
         {
+            daily_Reset();
+            initialize_timer_values();
+        }
+
+        private void button2_Click(object sender, EventArgs e)//lockdown test button
+        {
             lockdown();
         }
+
     }
 }

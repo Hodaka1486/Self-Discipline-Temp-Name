@@ -38,6 +38,9 @@ namespace CTRL
 
             Properties.Settings.Default.current_date = DateTime.Today.ToString("dd-MM-yyyy");//if you make it mm then it doesn't get month correct
 
+            //need to know the original number of goal days, goal days will decrement to show user progress
+            Properties.Settings.Default.original_goal_days = Properties.Settings.Default.goal_days;                                                                                                 
+
             Properties.Settings.Default.Save();//save all the values, these persist through closing the program
 
             if (Application.OpenForms["MainTimer"] != null)

@@ -176,5 +176,53 @@ namespace CTRL.Properties {
                 this["blocked_programs"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int original_goal_days {
+            get {
+                return ((int)(this["original_goal_days"]));
+            }
+            set {
+                this["original_goal_days"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int hours_productive {
+            get {
+                return ((int)(this["hours_productive"]));
+            }
+            set {
+                this["hours_productive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int minutes_productive {
+            get {
+                return ((int)(this["minutes_productive"]));
+            }
+            set {
+                this["minutes_productive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int seconds_productive {
+            get {
+                return ((int)(this["seconds_productive"]));
+            }
+            set {
+                this["seconds_productive"] = value;
+            }
+        }
     }
 }

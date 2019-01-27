@@ -67,6 +67,7 @@
             this.website_add_button.TabIndex = 4;
             this.website_add_button.Text = "Add";
             this.website_add_button.UseVisualStyleBackColor = true;
+            this.website_add_button.Click += new System.EventHandler(this.website_add_button_Click);
             // 
             // website_remove_button
             // 
@@ -76,6 +77,7 @@
             this.website_remove_button.TabIndex = 5;
             this.website_remove_button.Text = "Remove";
             this.website_remove_button.UseVisualStyleBackColor = true;
+            this.website_remove_button.Click += new System.EventHandler(this.website_remove_button_Click);
             // 
             // website_textbox
             // 
@@ -100,6 +102,7 @@
             this.program_add_button.TabIndex = 9;
             this.program_add_button.Text = "Add";
             this.program_add_button.UseVisualStyleBackColor = true;
+            this.program_add_button.Click += new System.EventHandler(this.program_add_button_Click);
             // 
             // program_remove_button
             // 
@@ -109,6 +112,7 @@
             this.program_remove_button.TabIndex = 10;
             this.program_remove_button.Text = "Remove";
             this.program_remove_button.UseVisualStyleBackColor = true;
+            this.program_remove_button.Click += new System.EventHandler(this.program_remove_button_Click);
             // 
             // blocked_websites_listbox
             // 
@@ -133,6 +137,7 @@
             this.settings_finished_button.TabIndex = 13;
             this.settings_finished_button.Text = "Done";
             this.settings_finished_button.UseVisualStyleBackColor = true;
+            this.settings_finished_button.Click += new System.EventHandler(this.settings_finished_button_Click);
             // 
             // Settings
             // 
@@ -152,6 +157,7 @@
             this.Controls.Add(this.label3);
             this.Name = "Settings";
             this.Text = "CTRL";
+            this.Load += new System.EventHandler(this.Settings_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
