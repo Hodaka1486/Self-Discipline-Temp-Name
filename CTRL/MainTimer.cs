@@ -174,9 +174,7 @@ namespace CTRL
             if (!System.IO.File.Exists(hosts_copy_path))//if they don't have a backup hosts
             {
 
-                System.IO.File.Create(hosts_copy_path).Close();//this creates the file and them immediately closes it, leaving it blank
-
-                //System.IO.File.Copy(hosts_copy_path, hosts_path, true);//copying the original back to being hosts so that they are unblocked
+                System.IO.File.Create(hosts_copy_path).Close();//create a backup hosts
 
                 //read the current hosts file into a list, find where our designated #appended by CTRL X
                 //save that index and look through that line to get the number X, then delete that line and the X infront of it
@@ -185,25 +183,38 @@ namespace CTRL
 
                 int index = linesList.FindIndex(s => new Regex(@"#appended by CTRL \d+").Match(s).Success);
 
+                System.Diagnostics.Debug.WriteLine("index is " + index);
+
                 //uses regex to find that number in the string, convert the match to a string and then that string to an int
-                if(index != -1)
+                if (index != -1)//means we found our comment in the hosts file
                 {
                     int number_of_websites = int.Parse(Regex.Match(linesList[index], @"\d").ToString());
 
                     //need to remove the strings at index, index-1, index-2, index-3...index-numberofwebsites
                     //need to fix this entire following section
 
-                    /*
-                    for(int i = 0; i < number_of_websites; i++)
+                    System.Diagnostics.Debug.WriteLine("number of websites is " + number_of_websites);
+
+                    for (int i = 0; i < number_of_websites+1; i++)
                     {
 
-                        System.Diagnostics.Debug.WriteLine(linesList[index-1] + " is removed");
+                        System.Diagnostics.Debug.WriteLine(linesList[index-i] + " is removed");
                         linesList.RemoveAt(index - i);
 
                     }
 
+                    //now we have our list of what the hosts file looks like without our website blocking
+                    //make this the backup and the main hosts file because there should beno websites currently blocked
+
+                    //write the list to the hosts and backup
+                    System.IO.File.WriteAllLines(hosts_path, linesList);
                     System.IO.File.WriteAllLines(hosts_copy_path, linesList);
-                    */
+                    
+                }
+                else//our comment isn't there, meaning either we hadn't edited the file or that the user deleted that comment. Just leave it alone at that point.
+                {
+                    //copy the current hosts file and make it the backup and leave the hosts file where it is
+                    System.IO.File.Copy(hosts_path, hosts_copy_path, true);
                 }
 
             }
@@ -405,7 +416,6 @@ namespace CTRL
 
             }
         }
-
 
         private void timer2_Tick(object sender, EventArgs e)
         {
