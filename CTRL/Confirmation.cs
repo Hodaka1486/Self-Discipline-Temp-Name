@@ -12,6 +12,7 @@ namespace CTRL
 {
     public partial class Confirmation : Form
     {
+        private bool confirm_go_back_button_pressed = false;
 
         public Form main_timer_reference { get; set; }//reference to the parent form which will be MainTimer
 
@@ -48,6 +49,8 @@ namespace CTRL
                 (Application.OpenForms["MainTimer"] as MainTimer).unhide_main_timer();
             }
 
+            confirm_go_back_button_pressed = true;
+
             this.Close();            
         }
 
@@ -59,23 +62,23 @@ namespace CTRL
                 (Application.OpenForms["MainTimer"] as MainTimer).create_gather_time_data();
             }
 
+            confirm_go_back_button_pressed = true;
+
             this.Close();
 
         }
 
         private void Confirmation_FormClosing(object sender, FormClosingEventArgs e)
         {
-            /* This doesn't work because using the previous or next buttons count as a UserClosing, need to somehow find whether they hit the X, previous or next
-            //if the user themselves closed this form then also close MainTimer (or else the program stays open but hidden)
-            if (e.CloseReason == CloseReason.UserClosing)
+            if (confirm_go_back_button_pressed)//if closing because of the confirm or go back buttons
             {
-                if (Application.OpenForms["MainTimer"] != null)
-                {
-                    (Application.OpenForms["MainTimer"] as MainTimer).Close();
-                }
-
+                //do nothing
             }
-            */
+            else//closing because of the x button
+            {
+                Application.Exit();
+            }
+
         }
     }
 }

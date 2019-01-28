@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainTimer));
             this.pause_resume_button = new System.Windows.Forms.Button();
             this.timer_label = new System.Windows.Forms.Label();
             this.days_left_till_goal_label = new System.Windows.Forms.Label();
@@ -49,6 +50,7 @@
             this.stopwatch_label = new System.Windows.Forms.Label();
             this.productivity_stopwatch_button = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.double_pause_button = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -159,7 +161,7 @@
             // 
             // reset_test_button
             // 
-            this.reset_test_button.Location = new System.Drawing.Point(419, 234);
+            this.reset_test_button.Location = new System.Drawing.Point(276, 202);
             this.reset_test_button.Name = "reset_test_button";
             this.reset_test_button.Size = new System.Drawing.Size(75, 23);
             this.reset_test_button.TabIndex = 15;
@@ -169,7 +171,7 @@
             // 
             // testbutton
             // 
-            this.testbutton.Location = new System.Drawing.Point(338, 234);
+            this.testbutton.Location = new System.Drawing.Point(276, 173);
             this.testbutton.Name = "testbutton";
             this.testbutton.Size = new System.Drawing.Size(75, 23);
             this.testbutton.TabIndex = 16;
@@ -179,7 +181,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(257, 234);
+            this.button2.Location = new System.Drawing.Point(276, 138);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 17;
@@ -239,11 +241,24 @@
             this.label2.TabIndex = 21;
             this.label2.Text = "Productivity Stopwatch";
             // 
+            // double_pause_button
+            // 
+            this.double_pause_button.BackColor = System.Drawing.Color.White;
+            this.double_pause_button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("double_pause_button.BackgroundImage")));
+            this.double_pause_button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.double_pause_button.Location = new System.Drawing.Point(463, 221);
+            this.double_pause_button.Name = "double_pause_button";
+            this.double_pause_button.Size = new System.Drawing.Size(41, 36);
+            this.double_pause_button.TabIndex = 22;
+            this.double_pause_button.UseVisualStyleBackColor = false;
+            this.double_pause_button.Click += new System.EventHandler(this.double_pause_button_Click);
+            // 
             // MainTimer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(516, 269);
+            this.Controls.Add(this.double_pause_button);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.productivity_stopwatch_button);
             this.Controls.Add(this.stopwatch_label);
@@ -296,6 +311,7 @@
         private System.Windows.Forms.Label stopwatch_label;
         private System.Windows.Forms.Button productivity_stopwatch_button;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button double_pause_button;
     }
 }
 

@@ -12,6 +12,8 @@ namespace CTRL
 {
     public partial class Gather_Time_Data : Form
     {
+        private bool next_button_clicked = false;//using this to see if form is closed through the next button or the X button
+
         public Gather_Time_Data()
         {
             InitializeComponent();
@@ -34,6 +36,8 @@ namespace CTRL
                 (Application.OpenForms["MainTimer"] as MainTimer).create_website_checkboxes();
             }
 
+            next_button_clicked = true;
+
             this.Close();
         }
 
@@ -55,18 +59,18 @@ namespace CTRL
 
         private void Gather_Time_Data_FormClosing(object sender, FormClosingEventArgs e)
         {
-           /* This doesn't work because using the previous or next buttons count as a UserClosing, need to somehow find whether they hit the X, previous or next
-            //if the user themselves closed this form then also close MainTimer (or else the program stays open but hidden)
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                if (Application.OpenForms["MainTimer"] != null)
-                {
-                    (Application.OpenForms["MainTimer"] as MainTimer).Close();
-                }
 
+            if (next_button_clicked)//if closing because of the next/previous buttons
+            {
+                //do nothing
             }
-            */
-        }
+            else//closing because of the x button
+            {
+                Application.Exit();
+            }
+
+        }      
+
 
     }
 }

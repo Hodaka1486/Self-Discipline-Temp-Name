@@ -131,7 +131,7 @@
             // 
             // settings_finished_button
             // 
-            this.settings_finished_button.Location = new System.Drawing.Point(435, 296);
+            this.settings_finished_button.Location = new System.Drawing.Point(437, 289);
             this.settings_finished_button.Name = "settings_finished_button";
             this.settings_finished_button.Size = new System.Drawing.Size(75, 23);
             this.settings_finished_button.TabIndex = 13;
@@ -143,7 +143,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(524, 338);
+            this.ClientSize = new System.Drawing.Size(524, 324);
             this.Controls.Add(this.settings_finished_button);
             this.Controls.Add(this.program_textbox);
             this.Controls.Add(this.blocked_websites_listbox);

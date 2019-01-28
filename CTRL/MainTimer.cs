@@ -11,9 +11,13 @@ using System.Text.RegularExpressions;
 
 namespace CTRL
 {
+
     public partial class MainTimer : Form
     {
         //----------------------------------------------------------Variables--------------------------------------------------------
+        // a bool that is true when the user is out of time
+        private bool out_of_time = false;
+            
         //for the timer, tracks how much time is left
         private int hours_left;
         private int minutes_left;
@@ -77,6 +81,7 @@ namespace CTRL
             minutes_left = Properties.Settings.Default.current_minutes;
             seconds_left = Properties.Settings.Default.current_seconds;//default is 0, will be not 0 if open the program the same day after a pause
 
+
             timer_label.Text = convert_timer_to_text(hours_left, minutes_left, seconds_left);//have the timer start at the a number rather than 00:00:00
 
             //load the stopwatch values
@@ -131,6 +136,10 @@ namespace CTRL
         //it also calculates how much the current timer for the day should be
         private void daily_Reset()
         {
+            out_of_time = false;//reset this value because time is reset
+
+            pause_resume_button.Enabled = true;//re-enable the button because it gets disable when you run out of time
+
             if (Properties.Settings.Default.goal_days != 0)//if we are at the goal day we won't want to go to -1 days
             {
                 Properties.Settings.Default.goal_days = Properties.Settings.Default.goal_days - 1;//subtract 1 day from the goal because we are on the next day
@@ -211,6 +220,8 @@ namespace CTRL
         //this is the function that implements the blocking of websites and programs
         private void lockdown()
         {
+            out_of_time = true;
+
             System.Collections.Specialized.StringCollection locked_sites = new System.Collections.Specialized.StringCollection();
             locked_sites = Properties.Settings.Default.blocked_websites;
 
@@ -365,6 +376,8 @@ namespace CTRL
                     {
                         timer1.Stop();
 
+                        pause_resume_button.Enabled = false;
+
                         //calls a function that implements the website and program blocking
                         lockdown();
 
@@ -419,13 +432,13 @@ namespace CTRL
 
         private void pause_resume_button_Click(object sender, EventArgs e)
         {
-            if(timer1.Enabled == false)//if paused then unpause
+            if (timer1.Enabled == false)//if paused then unpause
             {
-
+               
                 timer1.Enabled = true;
 
                 pause_resume_button.Text = "Pause";
-
+                
                 if(timer2.Enabled)//if the stopwatch is counting up pause it
                 {
                     timer2.Enabled = false;
@@ -474,11 +487,17 @@ namespace CTRL
 
                 productivity_stopwatch_button.Text = "Resume";
 
-                if (!timer1.Enabled)//if countdown is on then pause it
+                if (!timer1.Enabled)//if countdown off on then unpause it
                 {
-                    timer1.Enabled = true;
 
-                    pause_resume_button.Text = "Pause";
+                    if (out_of_time == false)
+                    {
+                        timer1.Enabled = true;
+
+                        pause_resume_button.Text = "Pause";
+
+                    }
+                   
                 }
 
             }
@@ -489,6 +508,13 @@ namespace CTRL
         {
             Settings settings = new Settings();
             settings.Show();
+        }
+
+        //when pressed it pauses both timers, for use when the user isn't using time but also isn't productive     
+        private void double_pause_button_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = false;
+            timer2.Enabled = false;
         }
 
         //------------------------------------------------------Testing---------------------------------------------------
@@ -522,5 +548,6 @@ namespace CTRL
             lockdown();
         }
 
+        
     }
 }

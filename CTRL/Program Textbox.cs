@@ -14,11 +14,12 @@ namespace CTRL
     {
         private System.Collections.Specialized.StringCollection blocked_programs = new System.Collections.Specialized.StringCollection();
 
+        private bool next_previous_button_clicked = false;//using this to see if form is closed through the next button or the X button
+
         public Program_Textbox()
         {
             InitializeComponent();
         }
-
 
         private void program_textbox_add_button_Click(object sender, EventArgs e)
         {
@@ -47,6 +48,8 @@ namespace CTRL
                 (Application.OpenForms["MainTimer"] as MainTimer).create_website_textboxes();
             }
 
+            next_previous_button_clicked = true;
+
             this.Close();
 
         }
@@ -70,6 +73,8 @@ namespace CTRL
             {
                 (Application.OpenForms["MainTimer"] as MainTimer).create_confirmation();
             }
+
+            next_previous_button_clicked = true;
 
             this.Close();
 
@@ -96,17 +101,16 @@ namespace CTRL
 
         private void Program_Textbox_FormClosing(object sender, FormClosingEventArgs e)
         {
-            /* This doesn't work because using the previous or next buttons count as a UserClosing, need to somehow find whether they hit the X, previous or next
-            //if the user themselves closed this form then also close MainTimer (or else the program stays open but hidden)
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                if (Application.OpenForms["MainTimer"] != null)
-                {
-                    (Application.OpenForms["MainTimer"] as MainTimer).Close();
-                }
 
+            if (next_previous_button_clicked)//if closing because of the next/previous buttons
+            {
+                //do nothing
             }
-            */
+            else//closing because of the x button
+            {
+                Application.Exit();
+            }
+
         }
     }
 }

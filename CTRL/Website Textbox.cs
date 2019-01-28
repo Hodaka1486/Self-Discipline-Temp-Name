@@ -14,6 +14,8 @@ namespace CTRL
     {
         private System.Collections.Specialized.StringCollection blocked_websites = new System.Collections.Specialized.StringCollection();
 
+        private bool next_previous_button_clicked = false;//using this to see if form is closed through the next button or the X button
+
         public Website_Textbox()
         {
             InitializeComponent();
@@ -35,7 +37,8 @@ namespace CTRL
                 (Application.OpenForms["MainTimer"] as MainTimer).create_website_checkboxes();
             }
 
-            
+            next_previous_button_clicked = true;
+
             this.Close();
 
         }
@@ -60,6 +63,8 @@ namespace CTRL
                 (Application.OpenForms["MainTimer"] as MainTimer).create_program_textboxes();
             }
 
+            next_previous_button_clicked = true;
+
             this.Close();
             
         }
@@ -76,7 +81,6 @@ namespace CTRL
            listBox1.Items.RemoveAt(listBox1.SelectedIndex);//get rid of the selected item
         }
 
-
         private void Website_Textbox_Load(object sender, EventArgs e)
         {
             //load the blocked_websites and put them into the list box
@@ -92,17 +96,16 @@ namespace CTRL
 
         private void Website_Textbox_FormClosing(object sender, FormClosingEventArgs e)
         {
-            /* This doesn't work because using the previous or next buttons count as a UserClosing, need to somehow find whether they hit the X, previous or next
-            //if the user themselves closed this form then also close MainTimer (or else the program stays open but hidden)
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                if (Application.OpenForms["MainTimer"] != null)
-                {
-                    (Application.OpenForms["MainTimer"] as MainTimer).Close();
-                }
 
+            if (next_previous_button_clicked)//if closing because of the next/previous buttons
+            {
+                //do nothing
             }
-            */
+            else//closing because of the x button
+            {
+                Application.Exit();
+            }
+           
         }
     }
 }
