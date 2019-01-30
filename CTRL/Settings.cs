@@ -47,11 +47,39 @@ namespace CTRL
 
         private void settings_finished_button_Click(object sender, EventArgs e)
         {
-            //need to figure out a way to only update it on dailyreset, not for the current day
+            //cleraing the string collections just in case
+            this.blocked_websites.Clear();
+            this.blocked_programs.Clear();
+
+            //message box asking if the user wants to make these changes
+            DialogResult res = MessageBox.Show("Do you want to make these changes? They will not come into effect until tommorow.", "Confirmation", MessageBoxButtons.OKCancel);
+
+            if(res == DialogResult.OK)
+            {
+                foreach (string x in blocked_websites_listbox.Items)
+                {
+                    blocked_websites.Add(x);
+                }
+                foreach (string x in blocked_programs_listbox.Items)
+                {
+                    blocked_programs.Add(x);
+                }
+                //save the values in the list box into tommorow_blocked_websites
+                Properties.Settings.Default.tommorow_blocked_websites = blocked_websites;
+                Properties.Settings.Default.tommorow_blocked_programs = blocked_programs;
+
+                Properties.Settings.Default.Save();
+            }
+
+            //close the settings form
+            this.Close();
+
         }
 
         private void Settings_Load(object sender, EventArgs e)
         {
+
+
             
             if (Properties.Settings.Default.blocked_programs == null)
             {
@@ -63,9 +91,22 @@ namespace CTRL
                 Properties.Settings.Default.blocked_programs = this.blocked_programs;//setting it from NULL to empty, they are not the same
             }
 
-            foreach (string x in Properties.Settings.Default.blocked_websites)
+            //tommorow blocked websites will be null unless the list of blocked websites has been changed today
+            if (Properties.Settings.Default.tommorow_blocked_websites == null)
             {
-                blocked_websites_listbox.Items.Add(x);
+                foreach (string x in Properties.Settings.Default.blocked_websites)//load the normal blocked websites
+                {
+                    blocked_websites_listbox.Items.Add(x);
+                }           
+            }
+            else//if the blocked websites have been modified load those and make the warning label visible
+            {
+                foreach (string x in Properties.Settings.Default.tommorow_blocked_websites)//load the modified blocked websites
+                {
+                    blocked_websites_listbox.Items.Add(x);
+                }
+
+                warning_label.Visible = true;//make the warning true
             }
 
             foreach (string x in Properties.Settings.Default.blocked_programs)
@@ -73,6 +114,28 @@ namespace CTRL
                 blocked_programs_listbox.Items.Add(x);
             }
 
+        }
+
+        private void website_textbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)//makes enter equivalent to clicking the add button
+            {
+                website_add_button_Click(sender, e);
+                //this stop the error ding sound form playing when hitting enter while selecting the textbox
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void program_textbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)//makes enter equivalent to clicking the add button
+            {
+                program_add_button_Click(sender, e);
+                //this stop the error ding sound form playing when hitting enter while selecting the textbox
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
         }
     }
 }

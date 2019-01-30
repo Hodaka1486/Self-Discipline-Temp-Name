@@ -127,6 +127,11 @@
             0,
             0,
             0});
+            this.goal_days_updown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.goal_days_updown.Name = "goal_days_updown";
             this.goal_days_updown.Size = new System.Drawing.Size(43, 20);
             this.goal_days_updown.TabIndex = 5;

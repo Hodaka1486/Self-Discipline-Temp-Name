@@ -67,20 +67,12 @@ namespace CTRL
         //this function initializes all the values on the MainTimer form like
         //the timer, day goals, original max time, current max time, goal time
         private void initialize_timer_values()
-        {
-            //loading the previously saved values
-            days_until_goal_number.Text = Properties.Settings.Default.goal_days.ToString();
-
-            //setting the original max, current max and goal max to the proper HH:MM
-            original_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.initial_hours, Properties.Settings.Default.initial_minutes);
-            current_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.current_hours, Properties.Settings.Default.current_minutes);
-            goal_max_time_value.Text = convert_hr_min_to_text(Properties.Settings.Default.goal_hours, Properties.Settings.Default.goal_minutes);
-
+        {            
             //load the countdown timer values
             hours_left = Properties.Settings.Default.current_hours;
             minutes_left = Properties.Settings.Default.current_minutes;
             seconds_left = Properties.Settings.Default.current_seconds;//default is 0, will be not 0 if open the program the same day after a pause
-
+            
 
             timer_label.Text = convert_timer_to_text(hours_left, minutes_left, seconds_left);//have the timer start at the a number rather than 00:00:00
 
@@ -136,18 +128,28 @@ namespace CTRL
         //it also calculates how much the current timer for the day should be
         private void daily_Reset()
         {
-            out_of_time = false;//reset this value because time is reset
+            //--------------------------------Reseting Variables--------------------------------------------
 
+            out_of_time = false;//reset this value because time is reset
             pause_resume_button.Enabled = true;//re-enable the button because it gets disable when you run out of time
+
+            if(Properties.Settings.Default.tommorow_blocked_websites != null)//if the user changed what websites to block with Settings
+            {
+                //change the blocked websites to the user's new list, set tommorow_blocked_websites back to null
+                Properties.Settings.Default.blocked_websites = Properties.Settings.Default.tommorow_blocked_websites;
+
+                Properties.Settings.Default.tommorow_blocked_websites = null;
+            }
 
             if (Properties.Settings.Default.goal_days != 0)//if we are at the goal day we won't want to go to -1 days
             {
                 Properties.Settings.Default.goal_days = Properties.Settings.Default.goal_days - 1;//subtract 1 day from the goal because we are on the next day
             }
 
+            //----------------------------Calculating daily max time and reseting countdown and stopwatch--------------------
+
             //First calculate the original time in minutes
             int total_initial_minutes = (Properties.Settings.Default.initial_hours * 60) + Properties.Settings.Default.initial_minutes;
-
             int goal_days_difference = Properties.Settings.Default.original_goal_days - Properties.Settings.Default.goal_days;//find the amount of days difference
 
             //is a decimal for the floor function, also calculates the daily time remaining
@@ -166,6 +168,8 @@ namespace CTRL
             Properties.Settings.Default.seconds_productive = 0;
 
             Properties.Settings.Default.Save();
+
+            //--------------------------------------Unblocking Websites--------------------------------------
 
             //this is where hosts and regedit will be reset to nothing blocked
             string hosts_path = Environment.GetEnvironmentVariable("systemroot") + "\\System32\\drivers\\etc\\hosts";
@@ -205,13 +209,11 @@ namespace CTRL
 
                     //now we have our list of what the hosts file looks like without our website blocking
                     //make this the backup and the main hosts file because there should beno websites currently blocked
-
-                    //write the list to the hosts and backup
                     System.IO.File.WriteAllLines(hosts_path, linesList);
                     System.IO.File.WriteAllLines(hosts_copy_path, linesList);
                     
                 }
-                else//our comment isn't there, meaning either we hadn't edited the file or that the user deleted that comment. Just leave it alone at that point.
+                else//our comment isn't there, meaning either we hadn't edited the file or that the user deleted that comment.
                 {
                     //copy the current hosts file and make it the backup and leave the hosts file where it is
                     System.IO.File.Copy(hosts_path, hosts_copy_path, true);
@@ -514,10 +516,35 @@ namespace CTRL
 
         }
 
+        //clicking statistics in the tool bar
+        private void statToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //check if there is a settings form open currently, if there is don't make another
+            if ((Application.OpenForms["Statistics"] as Statistics) != null)
+            {
+                //Form is already open
+            }
+            else
+            {
+                Statistics statistics = new Statistics();
+                statistics.Show();
+            }
+        }
+
+        //clicking settings in the toolbar
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Settings settings = new Settings();
-            settings.Show();
+            //check if there is a settings form open currently, if there is don't make another
+            if ((Application.OpenForms["Settings"] as Settings) != null)
+            {
+                //Form is already open
+            }
+            else
+            {
+                Settings settings = new Settings();
+                settings.Show();
+            }
+           
         }
 
         //when pressed it pauses both timers, for use when the user isn't using time but also isn't productive     
@@ -525,6 +552,14 @@ namespace CTRL
         {
             timer1.Enabled = false;
             timer2.Enabled = false;
+
+            pause_resume_button.Text = "Resume";
+            productivity_stopwatch_button.Text = "Resume";
+        }
+
+        private void MainTimer_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.P && e.Control) double_pause_button_Click(sender, e);//ctrl+p pauses both timers shortcut   
         }
 
         //------------------------------------------------------Testing---------------------------------------------------
@@ -558,6 +593,5 @@ namespace CTRL
             lockdown();
         }
 
-        
     }
 }

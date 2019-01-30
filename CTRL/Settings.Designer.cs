@@ -39,6 +39,7 @@
             this.blocked_websites_listbox = new System.Windows.Forms.ListBox();
             this.program_textbox = new System.Windows.Forms.TextBox();
             this.settings_finished_button = new System.Windows.Forms.Button();
+            this.warning_label = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label3
@@ -85,6 +86,7 @@
             this.website_textbox.Name = "website_textbox";
             this.website_textbox.Size = new System.Drawing.Size(106, 20);
             this.website_textbox.TabIndex = 6;
+            this.website_textbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.website_textbox_KeyDown);
             // 
             // blocked_programs_listbox
             // 
@@ -128,10 +130,11 @@
             this.program_textbox.Name = "program_textbox";
             this.program_textbox.Size = new System.Drawing.Size(106, 20);
             this.program_textbox.TabIndex = 12;
+            this.program_textbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.program_textbox_KeyDown);
             // 
             // settings_finished_button
             // 
-            this.settings_finished_button.Location = new System.Drawing.Point(437, 289);
+            this.settings_finished_button.Location = new System.Drawing.Point(437, 347);
             this.settings_finished_button.Name = "settings_finished_button";
             this.settings_finished_button.Size = new System.Drawing.Size(75, 23);
             this.settings_finished_button.TabIndex = 13;
@@ -139,11 +142,24 @@
             this.settings_finished_button.UseVisualStyleBackColor = true;
             this.settings_finished_button.Click += new System.EventHandler(this.settings_finished_button_Click);
             // 
+            // warning_label
+            // 
+            this.warning_label.AutoSize = true;
+            this.warning_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.warning_label.ForeColor = System.Drawing.Color.Red;
+            this.warning_label.Location = new System.Drawing.Point(124, 347);
+            this.warning_label.Name = "warning_label";
+            this.warning_label.Size = new System.Drawing.Size(272, 17);
+            this.warning_label.TabIndex = 15;
+            this.warning_label.Text = "These changes will be updated tommorow";
+            this.warning_label.Visible = false;
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(524, 324);
+            this.ClientSize = new System.Drawing.Size(524, 382);
+            this.Controls.Add(this.warning_label);
             this.Controls.Add(this.settings_finished_button);
             this.Controls.Add(this.program_textbox);
             this.Controls.Add(this.blocked_websites_listbox);
@@ -175,5 +191,6 @@
         private System.Windows.Forms.ListBox blocked_websites_listbox;
         private System.Windows.Forms.TextBox program_textbox;
         private System.Windows.Forms.Button settings_finished_button;
+        private System.Windows.Forms.Label warning_label;
     }
 }

@@ -14,3 +14,4 @@ C:\Users\Adam\source\repos\CTRL\CTRL\obj\Debug\CTRL.Gather_Time_Data.resources
 C:\Users\Adam\source\repos\CTRL\CTRL\obj\Debug\CTRL.Confirmation.resources
 C:\Users\Adam\source\repos\CTRL\CTRL\obj\Debug\CTRL.Program_Textbox.resources
 C:\Users\Adam\source\repos\CTRL\CTRL\obj\Debug\CTRL.Website_Textbox.resources
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Debug\CTRL.Statistics.resources

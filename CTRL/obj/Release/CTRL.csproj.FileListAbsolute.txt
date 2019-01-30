@@ -1,0 +1,15 @@
+C:\Users\Adam\source\repos\CTRL\CTRL\bin\Release\CTRL.exe.config
+C:\Users\Adam\source\repos\CTRL\CTRL\bin\Release\CTRL.exe
+C:\Users\Adam\source\repos\CTRL\CTRL\bin\Release\CTRL.pdb
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Release\CTRL.Confirmation.resources
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Release\CTRL.Gather_Time_Data.resources
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Release\CTRL.Program_Textbox.resources
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Release\CTRL.Settings.resources
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Release\CTRL.MainTimer.resources
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Release\CTRL.Properties.Resources.resources
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Release\CTRL.Website_Checkbox.resources
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Release\CTRL.Website_Textbox.resources
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Release\CTRL.csproj.GenerateResource.Cache
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Release\CTRL.csproj.CoreCompileInputs.cache
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Release\CTRL.exe
+C:\Users\Adam\source\repos\CTRL\CTRL\obj\Release\CTRL.pdb

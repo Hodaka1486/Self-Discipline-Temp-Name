@@ -30,7 +30,10 @@ namespace CTRL
 
         private void program_textbox_remove_button_Click(object sender, EventArgs e)
         {
-            listBox1.Items.RemoveAt(listBox1.SelectedIndex);//get rid of the selected item
+            if (listBox1.SelectedIndex != -1)//if the user uses tab and enter to hit the remove button while nothing is selected
+            {
+                listBox1.Items.RemoveAt(listBox1.SelectedIndex);//get rid of the selected item
+            }
         }
 
         private void program_textbox_previous_button_Click(object sender, EventArgs e)
@@ -111,6 +114,17 @@ namespace CTRL
                 Application.Exit();
             }
 
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                program_textbox_add_button_Click(sender, e);
+                //this stop the error ding sound form playing when hitting enter while selecting the textbox
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
         }
     }
 }

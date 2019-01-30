@@ -224,5 +224,27 @@ namespace CTRL.Properties {
                 this["seconds_productive"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection tommorow_blocked_websites {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["tommorow_blocked_websites"]));
+            }
+            set {
+                this["tommorow_blocked_websites"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection tommorow_blocked_programs {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["tommorow_blocked_programs"]));
+            }
+            set {
+                this["tommorow_blocked_programs"] = value;
+            }
+        }
     }
 }

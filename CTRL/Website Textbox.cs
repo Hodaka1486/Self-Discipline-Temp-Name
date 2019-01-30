@@ -71,20 +71,25 @@ namespace CTRL
 
         private void website_textbox_add_button_Click(object sender, EventArgs e)
         {
-            listBox1.Items.Add( textBox1.Text.ToLower() );//add the website to the listbox
+            if(!(textBox1.Text == ""))//if not empty add the text
+            {
+                listBox1.Items.Add(textBox1.Text.ToLower());//add the website to the listbox
+            }
 
             textBox1.Text = "";//reset the textbox
         }
 
         private void website_textbox_remove_button_Click(object sender, EventArgs e)
         {
-           listBox1.Items.RemoveAt(listBox1.SelectedIndex);//get rid of the selected item
+            if(listBox1.SelectedIndex != -1)//if the user uses tab and enter to hit the remove button while nothing is selected
+            {
+                listBox1.Items.RemoveAt(listBox1.SelectedIndex);//get rid of the selected item
+            }       
         }
 
         private void Website_Textbox_Load(object sender, EventArgs e)
         {
             //load the blocked_websites and put them into the list box
-
             this.blocked_websites = Properties.Settings.Default.blocked_websites;
 
             foreach (string x in Properties.Settings.Default.blocked_websites)
@@ -92,6 +97,7 @@ namespace CTRL
                 listBox1.Items.Add(x);
             }
 
+            textBox1.Text = "";//set it to this because I check if the user tries to input nothing
         }
 
         private void Website_Textbox_FormClosing(object sender, FormClosingEventArgs e)
@@ -106,6 +112,17 @@ namespace CTRL
                 Application.Exit();
             }
            
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                website_textbox_add_button_Click(sender, e);
+                //this stop the error ding sound form playing when hitting enter while selecting the textbox
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }           
         }
     }
 }
