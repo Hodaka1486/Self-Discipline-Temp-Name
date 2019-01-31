@@ -46,6 +46,7 @@
             this.double_pause_button = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.minimize_button = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -204,9 +205,11 @@
             this.double_pause_button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(58)))), ((int)(((byte)(147)))));
             this.double_pause_button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("double_pause_button.BackgroundImage")));
             this.double_pause_button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.double_pause_button.Location = new System.Drawing.Point(285, 150);
+            this.double_pause_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.double_pause_button.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(179)))), ((int)(((byte)(240)))));
+            this.double_pause_button.Location = new System.Drawing.Point(279, 146);
             this.double_pause_button.Name = "double_pause_button";
-            this.double_pause_button.Size = new System.Drawing.Size(20, 20);
+            this.double_pause_button.Size = new System.Drawing.Size(32, 32);
             this.double_pause_button.TabIndex = 22;
             this.double_pause_button.UseVisualStyleBackColor = false;
             this.double_pause_button.Click += new System.EventHandler(this.double_pause_button_Click);
@@ -225,17 +228,36 @@
             // 
             // button1
             // 
+            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
             this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(58)))), ((int)(((byte)(147)))));
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button1.ForeColor = System.Drawing.Color.Red;
-            this.button1.Location = new System.Drawing.Point(532, 1);
+            this.button1.Location = new System.Drawing.Point(534, 1);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(35, 33);
+            this.button1.Size = new System.Drawing.Size(32, 32);
             this.button1.TabIndex = 24;
-            this.button1.Text = "X";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // minimize_button
+            // 
+            this.minimize_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.minimize_button.AutoSize = true;
+            this.minimize_button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("minimize_button.BackgroundImage")));
+            this.minimize_button.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(58)))), ((int)(((byte)(147)))));
+            this.minimize_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.minimize_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.minimize_button.ForeColor = System.Drawing.Color.LightGray;
+            this.minimize_button.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.minimize_button.Location = new System.Drawing.Point(502, 1);
+            this.minimize_button.Name = "minimize_button";
+            this.minimize_button.Padding = new System.Windows.Forms.Padding(2);
+            this.minimize_button.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.minimize_button.Size = new System.Drawing.Size(32, 32);
+            this.minimize_button.TabIndex = 25;
+            this.minimize_button.UseVisualStyleBackColor = true;
+            this.minimize_button.Click += new System.EventHandler(this.minimize_button_Click);
             // 
             // MainTimer
             // 
@@ -244,6 +266,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(58)))), ((int)(((byte)(147)))));
             this.ClientSize = new System.Drawing.Size(567, 269);
             this.Controls.Add(this.button1);
+            this.Controls.Add(this.minimize_button);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.double_pause_button);
             this.Controls.Add(this.label2);
@@ -292,6 +315,7 @@
         private System.Windows.Forms.ToolStripMenuItem statToolStripMenuItem;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button minimize_button;
     }
 }
 

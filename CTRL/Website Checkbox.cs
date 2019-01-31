@@ -12,12 +12,15 @@ namespace CTRL
 {
     public partial class Website_Checkbox : Form
     {
+        private TabControl tabControl;
 
         private bool next_previous_button_clicked = false;//using this to see if form is closed through the next button or the X button
 
         public Website_Checkbox()
         {
             InitializeComponent();
+
+            tabControl = new TabControl();
         }
 
         private System.Collections.Specialized.StringCollection blocked_websites = new System.Collections.Specialized.StringCollection();
@@ -214,6 +217,42 @@ namespace CTRL
             {
                 Application.Exit();
             }
+
+        }
+
+        private void Website_Checkbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                /*
+               switch (tabControl.SelectedIndex)
+                {
+                    case 2://youtube
+
+                    case 3://
+                        
+                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                }
+
+    */
+
+            }
+
 
         }
     }

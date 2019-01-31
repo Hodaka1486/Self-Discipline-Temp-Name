@@ -129,12 +129,25 @@
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="double_pause_button.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAADwAAABJCAIAAADucdJXAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAAQ5JREFUaEPtzjEKA0EAQtG9/6UnIN/OxhRDsvhK4YPP+UM7fctO3/Ku08+36I21
-        R5/stNAba48+2WmhN9YefbLTQm+sPfpkp4XeWHv0yU4LvbH26JOdFnpj7dEnOy30xtqjT3Za6I21R5/s
-        tNAba48+2WmhN9YefbLTQm+sPfpkp4XeWHv0yU4LvbH26JOdFnpj7dEnOy30xtqjT3Za6I21R5/stNAb
-        a48+2WmhN9YefbLTQm+sPfpkp4XeWHv0yU4LvbH26JOdFnpj7dEnOy30xtqjT3Za6I21R5/stNAba48+
-        2WmhN9YefbLTQm+sPfpkp4XeWHv0yU4LvbH26JN3nf5lO33LTt+y03ec8wHxmYTNjdhhMQAAAABJRU5E
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAABjSURBVFhH7c2xCYBQEAXBX6Ot2pgdaKJmDggb3sAlt8FbY4zxx7Yf53P366WW0YhaRiNqGY2o
+        ZTSiltGIWkYjahmNqGU0opbRiFpGI2oZjahlNKKW0YhaRiNqGY2ojTHGt7Uu4UMbkL9U3cQAAAAASUVO
+        RK5CYII=
+</value>
+  </data>
+  <data name="button1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAN5JREFUWEft
+        k8ENwjAMRTMCIzACIzBCkgkYgQ1gBDaADagaEEfYAEboBk4nAP/UrSrUCwdXQvK7VP052P72d4ZhGMYv
+        +BstY2p3PpEXacCfaYG3WNNGJB1CTY9QZ0IzIhVColNM+e2vtBJJh25SyiHlu0gOU6M463uRdMEK+oJw
+        Ao7AGXmeB7b8gCbYiScc+V7JLHDhpjihfXhT8BrW3RrQQHsUeR5wiGXviV64AzQxFU01+OCqUlQih/+p
+        aKoQL7QttvNXpD6azTiaKmBiiVwl0sBwE6PGDMMwjD/AuQ8iP5ihClb5KwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="minimize_button.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAADNJREFUWEft
+        zbEJACAQBMGv0VZtzA40+fARBAOFGdjwuAAAvtH6mCfl7J7qZFfOAIDXRSyEZUbh/l4arAAAAABJRU5E
         rkJggg==
 </value>
   </data>

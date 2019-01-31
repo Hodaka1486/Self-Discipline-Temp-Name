@@ -108,6 +108,11 @@
             // goal_hours_updown
             // 
             this.goal_hours_updown.Location = new System.Drawing.Point(144, 114);
+            this.goal_hours_updown.Maximum = new decimal(new int[] {
+            23,
+            0,
+            0,
+            0});
             this.goal_hours_updown.Name = "goal_hours_updown";
             this.goal_hours_updown.Size = new System.Drawing.Size(45, 20);
             this.goal_hours_updown.TabIndex = 3;
@@ -115,6 +120,11 @@
             // goal_minutes_updown
             // 
             this.goal_minutes_updown.Location = new System.Drawing.Point(228, 114);
+            this.goal_minutes_updown.Maximum = new decimal(new int[] {
+            59,
+            0,
+            0,
+            0});
             this.goal_minutes_updown.Name = "goal_minutes_updown";
             this.goal_minutes_updown.Size = new System.Drawing.Size(43, 20);
             this.goal_minutes_updown.TabIndex = 4;

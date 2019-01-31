@@ -189,10 +189,10 @@ namespace CTRL
 
                 System.Diagnostics.Debug.WriteLine("index is " + index);
 
-                //uses regex to find that number in the string, convert the match to a string and then that string to an int
+                //uses regex to find that number in the string, convert the match to a string and then that string to an -
                 if (index != -1)//means we found our comment in the hosts file
                 {
-                    int number_of_websites = int.Parse(Regex.Match(linesList[index], @"\d").ToString());
+                    int number_of_websites = int.Parse(Regex.Match(linesList[index], @"\d+").ToString());
 
                     //need to remove the strings at index, index-1, index-2, index-3...index-numberofwebsites
                     //need to fix this entire following section
@@ -324,6 +324,7 @@ namespace CTRL
         private void MainTimer_Load(object sender, EventArgs e)
         {
 
+          
             if(!Properties.Settings.Default.initialized)//first time set up
             {
 
@@ -348,7 +349,7 @@ namespace CTRL
 
         private void MainTimer_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //save teh countdown timer
+            //save the countdown timer
             Properties.Settings.Default.current_hours   = this.hours_left;
             Properties.Settings.Default.current_minutes = this.minutes_left;
             Properties.Settings.Default.current_seconds = this.seconds_left;
@@ -516,6 +517,18 @@ namespace CTRL
 
         }
 
+        //light brown - to minimize the program
+        private void minimize_button_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        //Red X button to close the window
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
         //clicking statistics in the tool bar
         private void statToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -562,6 +575,32 @@ namespace CTRL
             if (e.KeyCode == Keys.P && e.Control) double_pause_button_Click(sender, e);//ctrl+p pauses both timers shortcut   
         }
 
+        //https://stackoverflow.com/questions/1592876/make-a-borderless-form-movable
+        //----------Moving the Form--------
+        private bool mouseDown;
+        private Point lastLocation;
+
+        private void MainTimer_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            lastLocation = e.Location;
+        }
+
+        private void MainTimer_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point(
+                    (this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+        private void MainTimer_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
         //------------------------------------------------------Testing---------------------------------------------------
 
         //This entire section is for testing purposes
@@ -593,39 +632,5 @@ namespace CTRL
             lockdown();
         }
 
-
-        //------------------------------------Moving the Form---------------------------
-        private bool mouseDown;
-        private Point lastLocation;
-
-        private void MainTimer_MouseDown(object sender, MouseEventArgs e)
-        {
-            mouseDown = true;
-            lastLocation = e.Location;
-        }
-
-        
-
-        private void MainTimer_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (mouseDown)
-            {
-                this.Location = new Point(
-                    (this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
-
-                this.Update();
-            }
-        }
-
-        private void MainTimer_MouseUp(object sender, MouseEventArgs e)
-        {
-            mouseDown = false;
-        }
-
-        //Red X button to close the window
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
     }
 }
