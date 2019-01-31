@@ -576,17 +576,20 @@ namespace CTRL
         }
 
         //https://stackoverflow.com/questions/1592876/make-a-borderless-form-movable
-        //----------Moving the Form--------
+        //-----------------------------------Moving the Form------------------------------------
+
+        //might need a better method, the form doesn't completely track the mouse and it can get stuck
+
         private bool mouseDown;
         private Point lastLocation;
 
-        private void MainTimer_MouseDown(object sender, MouseEventArgs e)
+        private void menuStrip1_MouseDown(object sender, MouseEventArgs e)
         {
             mouseDown = true;
             lastLocation = e.Location;
         }
 
-        private void MainTimer_MouseMove(object sender, MouseEventArgs e)
+        private void menuStrip1_MouseMove(object sender, MouseEventArgs e)
         {
             if (mouseDown)
             {
@@ -596,7 +599,8 @@ namespace CTRL
                 this.Update();
             }
         }
-        private void MainTimer_MouseUp(object sender, MouseEventArgs e)
+
+        private void menuStrip1_MouseUp(object sender, MouseEventArgs e)
         {
             mouseDown = false;
         }
@@ -632,5 +636,6 @@ namespace CTRL
             lockdown();
         }
 
+      
     }
 }
