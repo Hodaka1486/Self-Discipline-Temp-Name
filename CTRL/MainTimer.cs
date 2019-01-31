@@ -593,5 +593,39 @@ namespace CTRL
             lockdown();
         }
 
+
+        //------------------------------------Moving the Form---------------------------
+        private bool mouseDown;
+        private Point lastLocation;
+
+        private void MainTimer_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            lastLocation = e.Location;
+        }
+
+        
+
+        private void MainTimer_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point(
+                    (this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void MainTimer_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+        //Red X button to close the window
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
