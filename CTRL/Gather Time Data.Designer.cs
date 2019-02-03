@@ -31,7 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.inital_hours_updown = new System.Windows.Forms.NumericUpDown();
+            this.initial_hours_updown = new System.Windows.Forms.NumericUpDown();
             this.initial_minutes_updown = new System.Windows.Forms.NumericUpDown();
             this.goal_hours_updown = new System.Windows.Forms.NumericUpDown();
             this.goal_minutes_updown = new System.Windows.Forms.NumericUpDown();
@@ -42,7 +42,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.gather_time_data_next_button = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.inital_hours_updown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.initial_hours_updown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.initial_minutes_updown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.goal_hours_updown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.goal_minutes_updown)).BeginInit();
@@ -81,17 +81,17 @@
             this.label3.Text = "Over how many days do you want to achieve this?";
             this.label3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
-            // inital_hours_updown
+            // initial_hours_updown
             // 
-            this.inital_hours_updown.Location = new System.Drawing.Point(144, 50);
-            this.inital_hours_updown.Maximum = new decimal(new int[] {
+            this.initial_hours_updown.Location = new System.Drawing.Point(144, 50);
+            this.initial_hours_updown.Maximum = new decimal(new int[] {
             23,
             0,
             0,
             0});
-            this.inital_hours_updown.Name = "inital_hours_updown";
-            this.inital_hours_updown.Size = new System.Drawing.Size(45, 20);
-            this.inital_hours_updown.TabIndex = 1;
+            this.initial_hours_updown.Name = "initial_hours_updown";
+            this.initial_hours_updown.Size = new System.Drawing.Size(45, 20);
+            this.initial_hours_updown.TabIndex = 1;
             // 
             // initial_minutes_updown
             // 
@@ -221,7 +221,7 @@
             this.Controls.Add(this.goal_minutes_updown);
             this.Controls.Add(this.goal_hours_updown);
             this.Controls.Add(this.initial_minutes_updown);
-            this.Controls.Add(this.inital_hours_updown);
+            this.Controls.Add(this.initial_hours_updown);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -229,7 +229,7 @@
             this.Text = "Gather_Time_Data";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Gather_Time_Data_FormClosing);
             this.Load += new System.EventHandler(this.Gather_Time_Data_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.inital_hours_updown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.initial_hours_updown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.initial_minutes_updown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.goal_hours_updown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.goal_minutes_updown)).EndInit();
@@ -244,7 +244,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown inital_hours_updown;
+        private System.Windows.Forms.NumericUpDown initial_hours_updown;
         private System.Windows.Forms.NumericUpDown initial_minutes_updown;
         private System.Windows.Forms.NumericUpDown goal_hours_updown;
         private System.Windows.Forms.NumericUpDown goal_minutes_updown;

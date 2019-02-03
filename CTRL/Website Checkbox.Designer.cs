@@ -49,7 +49,8 @@
             this.checkBox1.Location = new System.Drawing.Point(30, 50);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(70, 17);
-            this.checkBox1.TabIndex = 2;
+            this.checkBox1.TabIndex = 3;
+            this.checkBox1.TabStop = false;
             this.checkBox1.Text = "YouTube";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
@@ -60,7 +61,8 @@
             this.checkBox2.Location = new System.Drawing.Point(117, 50);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(74, 17);
-            this.checkBox2.TabIndex = 3;
+            this.checkBox2.TabIndex = 4;
+            this.checkBox2.TabStop = false;
             this.checkBox2.Text = "Facebook";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
@@ -71,7 +73,8 @@
             this.checkBox3.Location = new System.Drawing.Point(208, 50);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(57, 17);
-            this.checkBox3.TabIndex = 4;
+            this.checkBox3.TabIndex = 5;
+            this.checkBox3.TabStop = false;
             this.checkBox3.Text = "Reddit";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
@@ -82,7 +85,8 @@
             this.checkBox4.Location = new System.Drawing.Point(293, 50);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(64, 17);
-            this.checkBox4.TabIndex = 5;
+            this.checkBox4.TabIndex = 6;
+            this.checkBox4.TabStop = false;
             this.checkBox4.Text = "Amazon";
             this.checkBox4.UseVisualStyleBackColor = true;
             this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
@@ -93,7 +97,8 @@
             this.checkBox5.Location = new System.Drawing.Point(385, 50);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(58, 17);
-            this.checkBox5.TabIndex = 6;
+            this.checkBox5.TabIndex = 7;
+            this.checkBox5.TabStop = false;
             this.checkBox5.Text = "Twitter";
             this.checkBox5.UseVisualStyleBackColor = true;
             this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
@@ -104,7 +109,8 @@
             this.checkBox6.Location = new System.Drawing.Point(30, 89);
             this.checkBox6.Name = "checkBox6";
             this.checkBox6.Size = new System.Drawing.Size(72, 17);
-            this.checkBox6.TabIndex = 7;
+            this.checkBox6.TabIndex = 8;
+            this.checkBox6.TabStop = false;
             this.checkBox6.Text = "Instagram";
             this.checkBox6.UseVisualStyleBackColor = true;
             this.checkBox6.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
@@ -115,7 +121,8 @@
             this.checkBox7.Location = new System.Drawing.Point(117, 89);
             this.checkBox7.Name = "checkBox7";
             this.checkBox7.Size = new System.Drawing.Size(55, 17);
-            this.checkBox7.TabIndex = 8;
+            this.checkBox7.TabIndex = 9;
+            this.checkBox7.TabStop = false;
             this.checkBox7.Text = "Netflix";
             this.checkBox7.UseVisualStyleBackColor = true;
             this.checkBox7.CheckedChanged += new System.EventHandler(this.checkBox7_CheckedChanged);
@@ -126,7 +133,8 @@
             this.checkBox8.Location = new System.Drawing.Point(208, 89);
             this.checkBox8.Name = "checkBox8";
             this.checkBox8.Size = new System.Drawing.Size(50, 17);
-            this.checkBox8.TabIndex = 9;
+            this.checkBox8.TabIndex = 10;
+            this.checkBox8.TabStop = false;
             this.checkBox8.Text = "eBay";
             this.checkBox8.UseVisualStyleBackColor = true;
             this.checkBox8.CheckedChanged += new System.EventHandler(this.checkBox8_CheckedChanged);
@@ -137,7 +145,8 @@
             this.checkBox9.Location = new System.Drawing.Point(293, 89);
             this.checkBox9.Name = "checkBox9";
             this.checkBox9.Size = new System.Drawing.Size(76, 17);
-            this.checkBox9.TabIndex = 10;
+            this.checkBox9.TabIndex = 11;
+            this.checkBox9.TabStop = false;
             this.checkBox9.Text = "WhatsApp";
             this.checkBox9.UseVisualStyleBackColor = true;
             this.checkBox9.CheckedChanged += new System.EventHandler(this.checkBox9_CheckedChanged);
@@ -148,7 +157,8 @@
             this.checkBox10.Location = new System.Drawing.Point(385, 89);
             this.checkBox10.Name = "checkBox10";
             this.checkBox10.Size = new System.Drawing.Size(58, 17);
-            this.checkBox10.TabIndex = 11;
+            this.checkBox10.TabIndex = 12;
+            this.checkBox10.TabStop = false;
             this.checkBox10.Text = "Spotify";
             this.checkBox10.UseVisualStyleBackColor = true;
             this.checkBox10.CheckedChanged += new System.EventHandler(this.checkBox10_CheckedChanged);
@@ -178,7 +188,7 @@
             this.to_gather_time_data_button.Location = new System.Drawing.Point(287, 144);
             this.to_gather_time_data_button.Name = "to_gather_time_data_button";
             this.to_gather_time_data_button.Size = new System.Drawing.Size(75, 23);
-            this.to_gather_time_data_button.TabIndex = 12;
+            this.to_gather_time_data_button.TabIndex = 0;
             this.to_gather_time_data_button.Text = "Previous";
             this.to_gather_time_data_button.UseVisualStyleBackColor = true;
             this.to_gather_time_data_button.Click += new System.EventHandler(this.to_gather_time_data_button_Click);
@@ -205,7 +215,6 @@
             this.Text = "Website_Checkbox";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Website_Checkbox_FormClosing);
             this.Load += new System.EventHandler(this.Website_Checkbox_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Website_Checkbox_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

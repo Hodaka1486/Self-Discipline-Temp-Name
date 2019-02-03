@@ -117,37 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>104, 17</value>
-  </metadata>
-  <metadata name="timer2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>219, 17</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="double_pause_button.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAGNJREFUWEft
-        zbEJgFAQBcFfo63amB1oomYOCBvewCW3wVtjjPHHth/nc/frpZbRiFpGI2oZjahlNKKW0YhaRiNqGY2o
-        ZTSiltGIWkYjahmNqGU0opbRiFpGI2oZjaiNMca3tS7hQxuQv1TdxAAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="button1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAN5JREFUWEft
-        k8ENwjAMRTMCIzACIzBCkgkYgQ1gBDaADagaEEfYAEboBk4nAP/UrSrUCwdXQvK7VP052P72d4ZhGMYv
-        +BstY2p3PpEXacCfaYG3WNNGJB1CTY9QZ0IzIhVColNM+e2vtBJJh25SyiHlu0gOU6M463uRdMEK+oJw
-        Ao7AGXmeB7b8gCbYiScc+V7JLHDhpjihfXhT8BrW3RrQQHsUeR5wiGXviV64AzQxFU01+OCqUlQih/+p
-        aKoQL7QttvNXpD6azTiaKmBiiVwl0sBwE6PGDMMwjD/AuQ8iP5ihClb5KwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="minimize_button.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAADNJREFUWEft
-        zbEJACAQBMGv0VZtzA40+fARBAOFGdjwuAAAvtH6mCfl7J7qZFfOAIDXRSyEZUbh/l4arAAAAABJRU5E
-        rkJggg==
-</value>
+  <data name="label1.Text" xml:space="preserve">
+    <value>WARNING: You are about to perform a total reset. This will 
+reset all values back to what they were the program was
+first opened. It does not undo the websites and programs
+currently blocked. You must do that manually by modifying
+your hosts file and Registry Editor. Please type RESET into
+the textbox and then hit the confirm button if you want to
+proceed with the total reset.</value>
   </data>
 </root>

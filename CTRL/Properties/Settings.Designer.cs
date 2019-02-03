@@ -246,5 +246,87 @@ namespace CTRL.Properties {
                 this["tommorow_blocked_programs"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int daily_max_hours {
+            get {
+                return ((int)(this["daily_max_hours"]));
+            }
+            set {
+                this["daily_max_hours"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int daily_max_minutes {
+            get {
+                return ((int)(this["daily_max_minutes"]));
+            }
+            set {
+                this["daily_max_minutes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection leisure_last_seven_days {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["leisure_last_seven_days"]));
+            }
+            set {
+                this["leisure_last_seven_days"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection productivity_last_seven_days {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["productivity_last_seven_days"]));
+            }
+            set {
+                this["productivity_last_seven_days"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int total_days {
+            get {
+                return ((int)(this["total_days"]));
+            }
+            set {
+                this["total_days"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int total_leisure_time {
+            get {
+                return ((int)(this["total_leisure_time"]));
+            }
+            set {
+                this["total_leisure_time"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int total_productive_time {
+            get {
+                return ((int)(this["total_productive_time"]));
+            }
+            set {
+                this["total_productive_time"] = value;
+            }
+        }
     }
 }

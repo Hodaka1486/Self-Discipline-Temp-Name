@@ -126,5 +126,11 @@ namespace CTRL
                 e.SuppressKeyPress = true;
             }
         }
+
+        private void listBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete) program_textbox_remove_button_Click(sender, e);//allow the use of the delete key to remove values from the listbox
+
+        }
     }
 }

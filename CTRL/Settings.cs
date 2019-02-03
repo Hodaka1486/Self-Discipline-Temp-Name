@@ -30,7 +30,10 @@ namespace CTRL
 
         private void website_remove_button_Click(object sender, EventArgs e)
         {
-            blocked_websites_listbox.Items.RemoveAt(blocked_websites_listbox.SelectedIndex);//get rid of the selected item
+            if (blocked_websites_listbox.SelectedIndex != -1)
+            {
+                blocked_websites_listbox.Items.RemoveAt(blocked_websites_listbox.SelectedIndex);//get rid of the selected item
+            }
         }
 
         private void program_add_button_Click(object sender, EventArgs e)
@@ -42,7 +45,10 @@ namespace CTRL
 
         private void program_remove_button_Click(object sender, EventArgs e)
         {
-            blocked_programs_listbox.Items.RemoveAt(blocked_programs_listbox.SelectedIndex);//get rid of the selected item
+            if (blocked_programs_listbox.SelectedIndex != -1)
+            {
+                blocked_programs_listbox.Items.RemoveAt(blocked_programs_listbox.SelectedIndex);//get rid of the selected item
+            }
         }
 
         private void settings_finished_button_Click(object sender, EventArgs e)
@@ -78,17 +84,11 @@ namespace CTRL
 
         private void Settings_Load(object sender, EventArgs e)
         {
+            //-----------------------------------Checking if the block websites have been changed-----------------------------
 
-
-            
-            if (Properties.Settings.Default.blocked_programs == null)
+            if (Properties.Settings.Default.blocked_websites == null)//making sure that we don't index a null value
             {
                 Properties.Settings.Default.blocked_websites = this.blocked_websites;//setting it from NULL to empty, they are not the same
-            }
-
-            if (Properties.Settings.Default.blocked_programs == null)
-            {
-                Properties.Settings.Default.blocked_programs = this.blocked_programs;//setting it from NULL to empty, they are not the same
             }
 
             //tommorow blocked websites will be null unless the list of blocked websites has been changed today
@@ -97,7 +97,7 @@ namespace CTRL
                 foreach (string x in Properties.Settings.Default.blocked_websites)//load the normal blocked websites
                 {
                     blocked_websites_listbox.Items.Add(x);
-                }           
+                }
             }
             else//if the blocked websites have been modified load those and make the warning label visible
             {
@@ -108,12 +108,30 @@ namespace CTRL
 
                 warning_label.Visible = true;//make the warning true
             }
+            //-----------------------------------Checking if the block programs have been changed-----------------------------
 
-            foreach (string x in Properties.Settings.Default.blocked_programs)
+            if (Properties.Settings.Default.blocked_programs == null)//making sure that we don't index a null value
             {
-                blocked_programs_listbox.Items.Add(x);
+                Properties.Settings.Default.blocked_programs = this.blocked_programs;//setting it from NULL to empty, they are not the same
             }
 
+            //tommorow blocked websites will be null unless the list of blocked websites has been changed today
+            if (Properties.Settings.Default.tommorow_blocked_programs == null)
+            {
+                foreach (string x in Properties.Settings.Default.blocked_programs)//load the normal blocked websites
+                {
+                    blocked_programs_listbox.Items.Add(x);
+                }
+            }
+            else//if the blocked websites have been modified load those and make the warning label visible
+            {
+                foreach (string x in Properties.Settings.Default.tommorow_blocked_programs)//load the modified blocked websites
+                {
+                    blocked_programs_listbox.Items.Add(x);
+                }
+
+                warning_label.Visible = true;//make the warning true
+            }
         }
 
         private void website_textbox_KeyDown(object sender, KeyEventArgs e)
@@ -136,6 +154,23 @@ namespace CTRL
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
+        }
+
+        private void blocked_websites_listbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete) website_remove_button_Click(sender, e);//allow the use of the delete key to remove values from the listbox
+        }
+
+        private void blocked_programs_listbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete) program_remove_button_Click(sender, e);//allow the use of the delete key to remove values from the listbox
+        }
+
+        //clicking outside a listbox/button/textbox unselects the listbox index
+        private void Settings_MouseDown(object sender, MouseEventArgs e)
+        {
+            blocked_programs_listbox.SelectedIndex = -1;
+            blocked_websites_listbox.SelectedIndex = -1;
         }
     }
 }

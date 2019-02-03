@@ -23,11 +23,15 @@ namespace CTRL
 
         private void button1_Click(object sender, EventArgs e)//I am sure
         {
-            Properties.Settings.Default.initialized = true;
+            Properties.Settings.Default.initialized = true;//this value is so the program knows the user has gone through set up
 
+            //these values are for remembering the time when the program is closed then opened
             Properties.Settings.Default.current_hours   = Properties.Settings.Default.initial_hours;
-
             Properties.Settings.Default.current_minutes = Properties.Settings.Default.initial_minutes;
+
+            //these values are for knowing the max time the user has that day 
+            Properties.Settings.Default.daily_max_hours = Properties.Settings.Default.initial_hours;
+            Properties.Settings.Default.daily_max_minutes = Properties.Settings.Default.initial_minutes;
 
             //calculate the amount of time that must be subtracted each day
             int total_minutes_initial = (Properties.Settings.Default.initial_hours * 60) + Properties.Settings.Default.initial_minutes;

@@ -220,40 +220,5 @@ namespace CTRL
 
         }
 
-        private void Website_Checkbox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                /*
-               switch (tabControl.SelectedIndex)
-                {
-                    case 2://youtube
-
-                    case 3://
-                        
-                        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                }
-
-    */
-
-            }
-
-
-        }
     }
 }
