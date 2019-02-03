@@ -122,7 +122,15 @@ namespace CTRL
                 //this stop the error ding sound form playing when hitting enter while selecting the textbox
                 e.Handled = true;
                 e.SuppressKeyPress = true;
-            }           
+            }
         }
+
+
+        private void listBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete) website_textbox_remove_button_Click(sender, e);//allow the use of the delete key to remove values from the listbox
+        }
+
+       
     }
 }

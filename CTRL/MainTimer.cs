@@ -36,19 +36,6 @@ namespace CTRL
             InitializeComponent();
         }
 
-        //used to convert hour/minute into a easy to view format (for displaying current/goal times)
-        private string convert_hr_min_to_text(int hr, int min)
-        {
-            string hr_str = hr.ToString();
-            string min_str = min.ToString();
-
-            if (hr_str.Length == 1) { hr_str = "0" + hr_str; }
-            if (min_str.Length == 1) { min_str = "0" + min_str; }
-
-            return (hr_str + ":" + min_str);
-
-        }
-
         //used to convert our hour/minute/seconds remaining into a easy to view format (for displaying the timer)
         private string convert_timer_to_text(int hr, int min, int sec)
         {
@@ -62,6 +49,40 @@ namespace CTRL
 
             return hr_str + ":" + min_str + ":" + sec_str;
 
+        }
+
+        //converts int seconds into string HH:MM:SS format
+        public string convert_seconds_to_HHMMSS(int time)
+        {
+            decimal d_time = Convert.ToDecimal(time);//make it a decimal for Math functions
+
+            //calculate the hours minutes and seconds by using division and modulo
+            string hours = (Math.Floor(d_time / 3600)).ToString();//the hours
+            decimal time_remaining = (int)d_time % 3600;
+            string minutes = (Math.Floor(time_remaining / 60)).ToString();//the minutes
+            string seconds = ((int)time_remaining % 60).ToString();//the seconds
+
+            //if any value is a single digit it needs a 0 in front
+            if (hours.Length == 1) hours = "0" + hours;
+            if (minutes.Length == 1) minutes = "0" + minutes;
+            if (seconds.Length == 1) seconds = "0" + seconds;
+
+            //putting the values together into HH:MM:SS
+            string return_string = hours + ":" + minutes + ":" + seconds;
+
+            return return_string;
+        }
+
+        //converts HH:MM:SS formatted string to int seconds
+        public int convert_HHMMSS_to_seconds(string HHMMSS)
+        {
+            int hours = Int32.Parse(HHMMSS.Substring(0, 2));
+            int min   = Int32.Parse(HHMMSS.Substring(3, 2));
+            int sec   = Int32.Parse(HHMMSS.Substring(6, 2));
+
+            int total_seconds_remaining = (hours * 3600) + (min * 60) + sec;//convert entire this to seconds for subtraction
+
+            return total_seconds_remaining;
         }
 
         //this function initializes all the values on the MainTimer form like
@@ -91,7 +112,6 @@ namespace CTRL
 
             string date = Properties.Settings.Default.current_date;
             string date_now = DateTime.Today.ToString("dd-MM-yyyy");
-            //string date_now = "18-01-2019"; //for testing, input your own date here
 
             //the days
             int day = Convert.ToInt32(date.Substring(0, 2));
@@ -121,7 +141,68 @@ namespace CTRL
             }
             else { new_day = false; }//went back in years
 
+            System.Diagnostics.Debug.WriteLine(new_day);
+
             return new_day;
+        }
+
+        //this function is called in daily reset, it updates the values for the statistics page and outputs a string in the format
+        //DD/MM/YYYY xx:xx:xx xx:xx:xx which is Date Leisure Time Productive time for that day
+        //it uses the previous day's values
+        private string[] daily_stats_update()
+        {
+            string[] date_leisure_productive = new string[3];//initialize the return string
+
+            //--------------Date----------
+            string date = Properties.Settings.Default.current_date;//this is the date before we reset to the new date
+            date_leisure_productive[0] = date;//added the date to the return string
+
+            //--------Leisure Time--------
+
+            int max_hours   = Properties.Settings.Default.daily_max_hours;//the max leisure hours the user had on that date
+            int max_minutes = Properties.Settings.Default.daily_max_minutes;//the max leisure minutes the user had on that date
+
+            //these strings are in format XX:XX:XX
+            string leisure_timer_value = timer_label.Text;       
+
+            if(leisure_timer_value != "00:00:00")//if the user did not use all the time need to find how much they used
+            {
+
+                int total_seconds_remaining = convert_HHMMSS_to_seconds(leisure_timer_value);
+
+                int max_total_seconds = (max_hours * 3600) + (max_minutes * 60);
+                int difference = max_total_seconds - total_seconds_remaining;//its a decimal becaues we will divide it
+
+                string leisure_HHMMSS = convert_seconds_to_HHMMSS(difference);
+
+                date_leisure_productive[1] = leisure_HHMMSS;
+            }
+            else
+            {
+                //the user used all their time so the leisure time value is the max time
+
+                //convert the hours and minutes to strings
+                string leisure_hours = max_hours.ToString();
+                string leisure_minutes = max_minutes.ToString();
+
+                //if only 1 digit need a 0 infront
+                if (leisure_hours.Length   == 1) leisure_hours = "0" + leisure_hours;
+                if (leisure_minutes.Length == 1) leisure_minutes = "0" + leisure_minutes;
+
+                //this makes the leisure time into the format HH:MM:SS
+                string leisure_HH_MM_SS = " "+leisure_hours + ":" + leisure_minutes + ":00";
+
+                //add the leisure time to the return string
+                date_leisure_productive[1] = leisure_HH_MM_SS;
+
+            }
+
+            //--------Productive Time---------
+            string productive_timer_value = stopwatch_label.Text;
+
+            date_leisure_productive[2] = productive_timer_value;
+
+            return date_leisure_productive;
         }
 
         //this function resets the websites and programs that can be used
@@ -133,6 +214,7 @@ namespace CTRL
             out_of_time = false;//reset this value because time is reset
             pause_resume_button.Enabled = true;//re-enable the button because it gets disable when you run out of time
 
+            //------------------Checking if the user changed the blocked website or programs--------------------
             if(Properties.Settings.Default.tommorow_blocked_websites != null)//if the user changed what websites to block with Settings
             {
                 //change the blocked websites to the user's new list, set tommorow_blocked_websites back to null
@@ -141,10 +223,46 @@ namespace CTRL
                 Properties.Settings.Default.tommorow_blocked_websites = null;
             }
 
-            if (Properties.Settings.Default.goal_days != 0)//if we are at the goal day we won't want to go to -1 days
+            if (Properties.Settings.Default.tommorow_blocked_programs != null)//if the user changed what websites to block with Settings
             {
-                Properties.Settings.Default.goal_days = Properties.Settings.Default.goal_days - 1;//subtract 1 day from the goal because we are on the next day
+                //change the blocked websites to the user's new list, set tommorow_blocked_websites back to null
+                Properties.Settings.Default.blocked_programs = Properties.Settings.Default.tommorow_blocked_programs;
+
+                Properties.Settings.Default.tommorow_blocked_programs = null;
             }
+
+            //-----------------------------------Updating Stats-------------------------------------------
+
+            Properties.Settings.Default.total_days += 1;//add 1 to the total days
+
+            string[] date_leisure_productive = daily_stats_update();//returns the date, leisure time and productive time in an array of that order
+
+            //updating the total leisure and productive time (in seconds)
+            Properties.Settings.Default.total_leisure_time    += convert_HHMMSS_to_seconds(date_leisure_productive[1]);
+            Properties.Settings.Default.total_productive_time += convert_HHMMSS_to_seconds(date_leisure_productive[2]);
+
+            //if we have 7 days saved then remove the oldest and add a new one
+            //the oldest is the last string and the newest will be input at position 0
+            if (Properties.Settings.Default.leisure_last_seven_days.Count >= 7)
+            {
+                Properties.Settings.Default.leisure_last_seven_days.RemoveAt(6);
+            }
+
+            if (Properties.Settings.Default.productivity_last_seven_days.Count >= 7)
+            {
+                Properties.Settings.Default.productivity_last_seven_days.RemoveAt(6);
+            }
+
+            //splitting the values into date: leisure and date:productive
+            Properties.Settings.Default.leisure_last_seven_days.Insert(0, date_leisure_productive[0]+ ": " + date_leisure_productive[1]);
+            Properties.Settings.Default.productivity_last_seven_days.Insert(0, date_leisure_productive[0]+ ": " + date_leisure_productive[2]);
+
+            //-------------------------------------------Lowering Goal Day Value----------------------------------------
+            //if we are at the goal day we won't want to go to -1 days
+            if (Properties.Settings.Default.goal_days != 0) Properties.Settings.Default.goal_days = Properties.Settings.Default.goal_days - 1;
+
+            //---------------------Updating Date-------------------------
+            Properties.Settings.Default.current_date = DateTime.Today.ToString("dd-MM-yyyy");
 
             //----------------------------Calculating daily max time and reseting countdown and stopwatch--------------------
 
@@ -187,33 +305,26 @@ namespace CTRL
 
                 int index = linesList.FindIndex(s => new Regex(@"#appended by CTRL \d+").Match(s).Success);
 
-                System.Diagnostics.Debug.WriteLine("index is " + index);
-
-                //uses regex to find that number in the string, convert the match to a string and then that string to an int
+                //uses regex to find that number in the string, convert the match to a string and then that string to an -
                 if (index != -1)//means we found our comment in the hosts file
                 {
-                    int number_of_websites = int.Parse(Regex.Match(linesList[index], @"\d").ToString());
+                    int number_of_websites = int.Parse(Regex.Match(linesList[index], @"\d+").ToString());
 
                     //need to remove the strings at index, index-1, index-2, index-3...index-numberofwebsites
                     //need to fix this entire following section
 
-                    System.Diagnostics.Debug.WriteLine("number of websites is " + number_of_websites);
-
                     for (int i = 0; i < number_of_websites+1; i++)
                     {
-
-                        System.Diagnostics.Debug.WriteLine(linesList[index-i] + " is removed");
                         linesList.RemoveAt(index - i);
-
                     }
 
                     //now we have our list of what the hosts file looks like without our website blocking
-                    //make this the backup and the main hosts file because there should beno websites currently blocked
+                    //make this the backup and the main hosts file because there should be no websites currently blocked
                     System.IO.File.WriteAllLines(hosts_path, linesList);
                     System.IO.File.WriteAllLines(hosts_copy_path, linesList);
                     
                 }
-                else//our comment isn't there, meaning either we hadn't edited the file or that the user deleted that comment.
+                else//our comment isn't there, meaning either we hadn't edited the file or that the user deleted our value
                 {
                     //copy the current hosts file and make it the backup and leave the hosts file where it is
                     System.IO.File.Copy(hosts_path, hosts_copy_path, true);
@@ -222,12 +333,8 @@ namespace CTRL
             }
             else//they do still have the backup which is how it should be
             {
-
                 System.IO.File.Copy(hosts_copy_path, hosts_path, true);//copying the original back to being hosts so that they are unblocked
-
             }
-
-
         }
 
         //this is the function that implements the blocking of websites and programs
@@ -249,8 +356,6 @@ namespace CTRL
             if (!System.IO.File.Exists(hosts_path))//if they don't have a hosts
             {
                 System.IO.File.Create(hosts_path).Close();//this creates the file and them immediately closes it, leaving it blank
-
-                System.Diagnostics.Debug.WriteLine("they don't have a hosts");
             }
 
             System.IO.File.Copy(hosts_path, hosts_copy_path, true);//copying the file
@@ -265,7 +370,6 @@ namespace CTRL
                 foreach (string x in locked_sites)
                 {
                     System.IO.File.AppendAllText(hosts_path, "127.0.0.1     " + "www." + x + Environment.NewLine);
-                    //System.Diagnostics.Debug.WriteLine("appeneded " + x);//this is for testing purposes
                 }
 
             }
@@ -324,6 +428,7 @@ namespace CTRL
         private void MainTimer_Load(object sender, EventArgs e)
         {
 
+          
             if(!Properties.Settings.Default.initialized)//first time set up
             {
 
@@ -332,14 +437,27 @@ namespace CTRL
 
                 //the main form is hidden in a shown event because load happens before shown
 
+                //if this is the first time adding a value to the string collection 
+                //we need to make it empty rather than null
+                if (Properties.Settings.Default.leisure_last_seven_days == null)
+                {
+                    System.Collections.Specialized.StringCollection stringCollection = new System.Collections.Specialized.StringCollection();
+                    Properties.Settings.Default.leisure_last_seven_days = stringCollection;
+                }
+
+                if (Properties.Settings.Default.productivity_last_seven_days == null)
+                {
+                    System.Collections.Specialized.StringCollection stringCollection = new System.Collections.Specialized.StringCollection();
+                    Properties.Settings.Default.productivity_last_seven_days = stringCollection;
+                }
+
             }
             else
             {
                 //check if it is a new day or not
-                if( new_Day() ) { daily_Reset(); }
+                if( new_Day() )  daily_Reset(); 
 
-                //this function initializes all the values on the MainTimer form like
-                //the timer, day goals, original max time, current max time, goal time
+                //this function initializes the timer values on the MainTimer form           
                 initialize_timer_values();
 
             }
@@ -348,10 +466,10 @@ namespace CTRL
 
         private void MainTimer_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //save teh countdown timer
-            Properties.Settings.Default.current_hours   = this.hours_left;
-            Properties.Settings.Default.current_minutes = this.minutes_left;
-            Properties.Settings.Default.current_seconds = this.seconds_left;
+            //save the countdown timer
+            Properties.Settings.Default.current_hours      = this.hours_left;
+            Properties.Settings.Default.current_minutes    = this.minutes_left;
+            Properties.Settings.Default.current_seconds    = this.seconds_left;
             //save the stopwatch
             Properties.Settings.Default.hours_productive   = this.hours_productive;
             Properties.Settings.Default.minutes_productive = this.minutes_productive;
@@ -516,6 +634,18 @@ namespace CTRL
 
         }
 
+        //light brown - to minimize the program
+        private void minimize_button_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        //Red X button to close the window
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
         //clicking statistics in the tool bar
         private void statToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -562,6 +692,35 @@ namespace CTRL
             if (e.KeyCode == Keys.P && e.Control) double_pause_button_Click(sender, e);//ctrl+p pauses both timers shortcut   
         }
 
+        //-----------------------------------Moving the Form------------------------------------
+        //https://stackoverflow.com/questions/1592876/make-a-borderless-form-movable
+
+        //might need a better method, the form doesn't completely track the mouse and it can get stuck
+
+        private bool mouseDown;
+        private Point lastLocation;
+
+        private void menuStrip1_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            lastLocation = e.Location;
+        }
+
+        private void menuStrip1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point((this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void menuStrip1_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
         //------------------------------------------------------Testing---------------------------------------------------
 
         //This entire section is for testing purposes
@@ -569,7 +728,6 @@ namespace CTRL
         private void reset_test_button_Click(object sender, EventArgs e)//reset button
         {
             Properties.Settings.Default.Reset();
-
             Properties.Settings.Default.Save();
 
             string hosts_copy_path = Environment.GetEnvironmentVariable("systemroot") + "\\System32\\drivers\\etc\\hosts_original";
@@ -591,6 +749,18 @@ namespace CTRL
         private void button2_Click(object sender, EventArgs e)//lockdown test button
         {
             lockdown();
+        }
+
+        private void test_button_Click(object sender, EventArgs e)
+        {
+           test_function();
+        }
+
+        private void test_function()
+        {
+
+            System.Diagnostics.Debug.WriteLine(daily_stats_update());
+
         }
 
     }

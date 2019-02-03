@@ -42,7 +42,7 @@
             this.program_textbox_previous_button.Location = new System.Drawing.Point(316, 153);
             this.program_textbox_previous_button.Name = "program_textbox_previous_button";
             this.program_textbox_previous_button.Size = new System.Drawing.Size(75, 23);
-            this.program_textbox_previous_button.TabIndex = 0;
+            this.program_textbox_previous_button.TabIndex = 4;
             this.program_textbox_previous_button.Text = "Previous";
             this.program_textbox_previous_button.UseVisualStyleBackColor = true;
             this.program_textbox_previous_button.Click += new System.EventHandler(this.program_textbox_previous_button_Click);
@@ -52,7 +52,7 @@
             this.program_textbox_next_button.Location = new System.Drawing.Point(397, 153);
             this.program_textbox_next_button.Name = "program_textbox_next_button";
             this.program_textbox_next_button.Size = new System.Drawing.Size(75, 23);
-            this.program_textbox_next_button.TabIndex = 1;
+            this.program_textbox_next_button.TabIndex = 5;
             this.program_textbox_next_button.Text = "Next";
             this.program_textbox_next_button.UseVisualStyleBackColor = true;
             this.program_textbox_next_button.Click += new System.EventHandler(this.program_textbox_next_button_Click);
@@ -63,7 +63,8 @@
             this.listBox1.Location = new System.Drawing.Point(12, 12);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(219, 160);
-            this.listBox1.TabIndex = 2;
+            this.listBox1.TabIndex = 0;
+            this.listBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBox1_KeyDown);
             // 
             // label1
             // 
@@ -80,7 +81,7 @@
             this.program_textbox_add_button.Location = new System.Drawing.Point(240, 93);
             this.program_textbox_add_button.Name = "program_textbox_add_button";
             this.program_textbox_add_button.Size = new System.Drawing.Size(56, 23);
-            this.program_textbox_add_button.TabIndex = 4;
+            this.program_textbox_add_button.TabIndex = 2;
             this.program_textbox_add_button.Text = "Add";
             this.program_textbox_add_button.UseVisualStyleBackColor = true;
             this.program_textbox_add_button.Click += new System.EventHandler(this.program_textbox_add_button_Click);
@@ -90,7 +91,7 @@
             this.program_textbox_remove_button.Location = new System.Drawing.Point(302, 93);
             this.program_textbox_remove_button.Name = "program_textbox_remove_button";
             this.program_textbox_remove_button.Size = new System.Drawing.Size(56, 23);
-            this.program_textbox_remove_button.TabIndex = 5;
+            this.program_textbox_remove_button.TabIndex = 3;
             this.program_textbox_remove_button.Text = "Remove";
             this.program_textbox_remove_button.UseVisualStyleBackColor = true;
             this.program_textbox_remove_button.Click += new System.EventHandler(this.program_textbox_remove_button_Click);
@@ -100,7 +101,7 @@
             this.textBox1.Location = new System.Drawing.Point(238, 67);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(216, 20);
-            this.textBox1.TabIndex = 6;
+            this.textBox1.TabIndex = 1;
             this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
             // Program_Textbox
