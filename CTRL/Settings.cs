@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,11 +22,31 @@ namespace CTRL
             InitializeComponent();
         }
 
+        public static bool ValidHttpURL(string s, out Uri resultURI)
+        {
+            if (!Regex.IsMatch(s, @"^https?:\/\/", RegexOptions.IgnoreCase))
+                s = "http://" + s;
+
+            if (Uri.TryCreate(s, UriKind.Absolute, out resultURI))
+                return (resultURI.Scheme == Uri.UriSchemeHttp ||
+                        resultURI.Scheme == Uri.UriSchemeHttps);
+
+            return false;
+        }
+
         private void website_add_button_Click(object sender, EventArgs e)
         {
-            blocked_websites_listbox.Items.Add(website_textbox.Text.ToLower());//add the website to the listbox
+            Uri uriResult;
 
-            website_textbox.Text = "";//reset the textbox
+            if (ValidHttpURL(website_textbox.Text, out uriResult))//if not empty add the text
+            {
+                blocked_websites_listbox.Items.Add(website_textbox.Text.ToLower());//add the website to the listbox
+                blocked_websites_listbox.Text = "";//reset the textbox
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid url.", "Error: Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }          
         }
 
         private void website_remove_button_Click(object sender, EventArgs e)

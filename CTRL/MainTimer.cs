@@ -76,6 +76,7 @@ namespace CTRL
         //converts HH:MM:SS formatted string to int seconds
         public int convert_HHMMSS_to_seconds(string HHMMSS)
         {
+
             int hours = Int32.Parse(HHMMSS.Substring(0, 2));
             int min   = Int32.Parse(HHMMSS.Substring(3, 2));
             int sec   = Int32.Parse(HHMMSS.Substring(6, 2));
@@ -141,8 +142,6 @@ namespace CTRL
             }
             else { new_day = false; }//went back in years
 
-            System.Diagnostics.Debug.WriteLine(new_day);
-
             return new_day;
         }
 
@@ -190,7 +189,7 @@ namespace CTRL
                 if (leisure_minutes.Length == 1) leisure_minutes = "0" + leisure_minutes;
 
                 //this makes the leisure time into the format HH:MM:SS
-                string leisure_HH_MM_SS = " "+leisure_hours + ":" + leisure_minutes + ":00";
+                string leisure_HH_MM_SS = leisure_hours + ":" + leisure_minutes + ":00";
 
                 //add the leisure time to the return string
                 date_leisure_productive[1] = leisure_HH_MM_SS;
@@ -198,11 +197,18 @@ namespace CTRL
             }
 
             //--------Productive Time---------
-            string productive_timer_value = stopwatch_label.Text;
+            string productive_hours   = Properties.Settings.Default.hours_productive.ToString();
+            string productive_minutes = Properties.Settings.Default.minutes_productive.ToString();
+            string productive_seconds = Properties.Settings.Default.seconds_productive.ToString();
 
+            if (productive_hours.Length == 1)   productive_hours   = "0" + productive_hours;
+            if (productive_minutes.Length == 1) productive_minutes = "0" + productive_minutes;
+            if (productive_seconds.Length == 1) productive_seconds = "0" + productive_seconds;
+
+            string productive_timer_value = productive_hours+":"+productive_minutes+":"+productive_seconds;
             date_leisure_productive[2] = productive_timer_value;
 
-            return date_leisure_productive;
+            return date_leisure_productive;//format is date, leisure time, productive time
         }
 
         //this function resets the websites and programs that can be used
@@ -253,7 +259,7 @@ namespace CTRL
                 Properties.Settings.Default.productivity_last_seven_days.RemoveAt(6);
             }
 
-            //splitting the values into date: leisure and date:productive
+            //saving them as 2 string collections one for leisure and one for productivity
             Properties.Settings.Default.leisure_last_seven_days.Insert(0, date_leisure_productive[0]+ ": " + date_leisure_productive[1]);
             Properties.Settings.Default.productivity_last_seven_days.Insert(0, date_leisure_productive[0]+ ": " + date_leisure_productive[2]);
 
@@ -267,18 +273,29 @@ namespace CTRL
             //----------------------------Calculating daily max time and reseting countdown and stopwatch--------------------
 
             //First calculate the original time in minutes
-            int total_initial_minutes = (Properties.Settings.Default.initial_hours * 60) + Properties.Settings.Default.initial_minutes;
-            int goal_days_difference = Properties.Settings.Default.original_goal_days - Properties.Settings.Default.goal_days;//find the amount of days difference
+            int total_initial_minutes = (Properties.Settings.Default.daily_max_hours * 60) + Properties.Settings.Default.daily_max_minutes;
 
             //is a decimal for the floor function, also calculates the daily time remaining
-            //it takes the original time and subtracts the time per day multiplied by the amount of days that occured
-            decimal new_goal_minutes = total_initial_minutes - (Properties.Settings.Default.daily_subtraction_minutes * goal_days_difference);
-            if (new_goal_minutes < 0) { new_goal_minutes = 0; }//if we get into negatives then just set it to 0
+            decimal new_max_total_minutes = total_initial_minutes - Properties.Settings.Default.daily_subtraction_minutes;
+
+            int goal_time_in_min = (Properties.Settings.Default.goal_hours * 60) + Properties.Settings.Default.goal_minutes;
+
+            //if we would go below the goal time 
+            if (new_max_total_minutes < goal_time_in_min) { new_max_total_minutes = goal_time_in_min; }
+
+            int hrs = (int)(Math.Floor(new_max_total_minutes / 60));
+            int mins = (int)(new_max_total_minutes) % 60;
+            int secs = 0;//seconds should be 0
 
             //set the hours and minutes to the correct values
-            Properties.Settings.Default.current_hours = (int)(Math.Floor(new_goal_minutes / 60));
-            Properties.Settings.Default.current_minutes = (int)(new_goal_minutes) % 60;
-            Properties.Settings.Default.current_seconds = 0;//if we are on a new day the seconds should be 0
+            //current is for the timers
+            Properties.Settings.Default.current_hours   = hrs;
+            Properties.Settings.Default.current_minutes = mins;
+            Properties.Settings.Default.current_seconds = secs;//if we are on a new day the seconds should be 0
+
+            //daily max X is for knowing what the max number the day started with
+            Properties.Settings.Default.daily_max_hours   = hrs;
+            Properties.Settings.Default.daily_max_minutes = mins;
 
             //set the stopwatch back to 0
             Properties.Settings.Default.hours_productive   = 0;
@@ -369,7 +386,7 @@ namespace CTRL
                 //iterate through the list of websites that should be blocked and add them to the hosts file
                 foreach (string x in locked_sites)
                 {
-                    System.IO.File.AppendAllText(hosts_path, "127.0.0.1     " + "www." + x + Environment.NewLine);
+                    System.IO.File.AppendAllText(hosts_path, "127.0.0.1     " + x + Environment.NewLine);
                 }
 
             }
@@ -427,7 +444,6 @@ namespace CTRL
         //on opening the form check if initialized is true or false, if false open website checkboxes and hide this
         private void MainTimer_Load(object sender, EventArgs e)
         {
-
           
             if(!Properties.Settings.Default.initialized)//first time set up
             {
@@ -454,7 +470,7 @@ namespace CTRL
             }
             else
             {
-                //check if it is a new day or not
+                //check if it is a new day or not and if it is call a daily reset
                 if( new_Day() )  daily_Reset(); 
 
                 //this function initializes the timer values on the MainTimer form           
@@ -753,13 +769,13 @@ namespace CTRL
 
         private void test_button_Click(object sender, EventArgs e)
         {
-           test_function();
-        }
 
-        private void test_function()
-        {
+            string[] date_leisure_productive = daily_stats_update();//returns the date, leisure time and productive time in an array of that order
 
-            System.Diagnostics.Debug.WriteLine(daily_stats_update());
+            //updating the total leisure and productive time (in seconds)
+            Properties.Settings.Default.total_leisure_time += convert_HHMMSS_to_seconds(date_leisure_productive[1]);
+            Properties.Settings.Default.total_productive_time += convert_HHMMSS_to_seconds(date_leisure_productive[2]);
+
 
         }
 

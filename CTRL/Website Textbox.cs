@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -69,14 +70,34 @@ namespace CTRL
             
         }
 
+        //function I found online to check if the input is a valid url
+        //https://stackoverflow.com/questions/7578857/how-to-check-whether-a-string-is-a-valid-http-url
+        //not perfect but it gets most normal things correct
+        public static bool ValidHttpURL(string s, out Uri resultURI)
+        {
+            if (!Regex.IsMatch(s, @"^https?:\/\/", RegexOptions.IgnoreCase))
+                s = "http://" + s;
+
+            if (Uri.TryCreate(s, UriKind.Absolute, out resultURI))
+                return (resultURI.Scheme == Uri.UriSchemeHttp ||
+                        resultURI.Scheme == Uri.UriSchemeHttps);
+
+            return false;
+        }
+
         private void website_textbox_add_button_Click(object sender, EventArgs e)
         {
-            if(!(textBox1.Text == ""))//if not empty add the text
+            Uri uriResult;
+
+            if (ValidHttpURL(textBox1.Text, out uriResult))//if not empty add the text
             {
                 listBox1.Items.Add(textBox1.Text.ToLower());//add the website to the listbox
+                textBox1.Text = "";//reset the textbox
             }
-
-            textBox1.Text = "";//reset the textbox
+            else
+            {
+                MessageBox.Show("Please enter a valid url.", "Error: Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }        
         }
 
         private void website_textbox_remove_button_Click(object sender, EventArgs e)
