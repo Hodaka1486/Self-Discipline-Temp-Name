@@ -11,3 +11,4 @@ feel that you spend too much time on so that my program can block them, but not 
 so that you can still use the sites and programs you love, but with a time limit each day. This time limit decreases each day
 to make it easier to reach your goal time. Once the timer hits 0 it blocks all the websites and programs the user input. When the
 timer resets the next day all the websites and programs become unblocked.
+#执行文件在bin的debug或者release内（有GUI的操作界面）
